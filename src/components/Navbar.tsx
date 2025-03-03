@@ -1,12 +1,14 @@
 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Book, GraduationCap, Users, Menu, X } from 'lucide-react';
+import { Book, GraduationCap, Users, Menu, X, FileText } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Link, useLocation } from 'react-router-dom';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -33,7 +35,7 @@ const Navbar = () => {
       )}
     >
       <div className="container flex items-center justify-between">
-        <a href="/" className="flex items-center space-x-2">
+        <Link to="/" className="flex items-center space-x-2">
           <img 
             src="/lovable-uploads/ee7050b6-7b75-4cc0-8422-a29830b27952.png" 
             alt="Institute of Scientific Informatics" 
@@ -45,7 +47,7 @@ const Navbar = () => {
           )}>
             Institute of Scientific Informatics
           </span>
-        </a>
+        </Link>
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
@@ -79,6 +81,17 @@ const Navbar = () => {
             <Users className="h-4 w-4" />
             <span>Supervision</span>
           </a>
+          <Link 
+            to="/resources" 
+            className={cn(
+              "flex items-center space-x-1 hover:text-primary transition-colors",
+              isScrolled ? "text-foreground" : "text-white",
+              location.pathname === "/resources" && "text-primary"
+            )}
+          >
+            <FileText className="h-4 w-4" />
+            <span>Resources</span>
+          </Link>
           <Button
             variant={isScrolled ? "default" : "outline"}
             className={cn(
@@ -125,6 +138,10 @@ const Navbar = () => {
             <Users className="h-5 w-5 text-primary" />
             <span>Supervision</span>
           </a>
+          <Link to="/resources" className="flex items-center space-x-2 text-xl" onClick={toggleMobileMenu}>
+            <FileText className="h-5 w-5 text-primary" />
+            <span>Resources</span>
+          </Link>
           <Button size="lg" className="w-full">Sign In</Button>
         </nav>
       </div>
