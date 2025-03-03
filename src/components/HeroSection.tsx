@@ -13,7 +13,7 @@ const HeroSection = () => {
         <div className="max-w-3xl mx-auto text-center">
           <div className="flex justify-center mb-8 animate-fade-in">
             <img 
-              src="/lovable-uploads/ee7050b6-7b75-4cc0-8422-a29830b27952.png"
+              src="/lovable-uploads/e7fac7ec-b4d4-40d2-a483-56b82c7a13a2.png"
               alt="Institute Logo" 
               className="w-32 h-32 object-contain"
             />
@@ -28,7 +28,7 @@ const HeroSection = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in animate-delay-300">
-            <Button className="text-lg py-6 px-8 bg-white text-primary hover:bg-white/90">
+            <Button className="text-lg py-6 px-8 bg-institute-yellow text-institute-red hover:bg-white/90">
               Explore Courses
             </Button>
             <Button variant="outline" className="text-lg py-6 px-8 text-white border-white hover:bg-white/20">

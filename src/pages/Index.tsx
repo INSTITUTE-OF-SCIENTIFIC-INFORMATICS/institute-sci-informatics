@@ -8,6 +8,7 @@ import SupervisionSection from '@/components/supervision/SupervisionSection';
 import TestimonialsSection from '@/components/testimonials/TestimonialsSection';
 import CTASection from '@/components/cta/CTASection';
 import FeaturedCourseAnnouncement from '@/components/courses/FeaturedCourseAnnouncement';
+import ScienceHubSection from '@/components/ScienceHubSection';
 import { courses } from '@/data/coursesData';
 
 const Index = () => {
@@ -15,11 +16,12 @@ const Index = () => {
     <MainLayout>
       <HeroSection />
       <FeaturedCourseAnnouncement />
+      <ScienceHubSection />
       <CoursesSection courses={courses} />
       <FeaturedProject />
+      <Partners />
       <TestimonialsSection />
       <SupervisionSection />
-      <Partners />
       <CTASection />
     </MainLayout>
   );

@@ -68,11 +68,15 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				institute: {
-					blue: '#1e3a8a',
-					purple: '#7e22ce',
+					blue: '#0EA5E9',
+					purple: '#8B5CF6',
 					indigo: '#4338ca',
 					teal: '#0d9488',
-					gold: '#b45309',
+					gold: '#F59E0B',
+					red: '#ef4444',
+					orange: '#F97316',
+					yellow: '#FEF7CD',
+					violet: '#7E69AB',
 				}
 			},
 			borderRadius: {
@@ -140,7 +144,9 @@ export default {
 				'testimonial-slide-out': 'testimonial-slide-out 0.5s ease-out'
 			},
 			backgroundImage: {
-				'hero-pattern': "linear-gradient(to right, rgba(29, 78, 216, 0.8), rgba(124, 58, 237, 0.8)), url('/lovable-uploads/dcfef9a3-6472-482c-94e8-322b42dbcaa5.png')",
+				'hero-pattern': "linear-gradient(to right, rgba(239, 68, 68, 0.7), rgba(139, 92, 246, 0.7)), url('/lovable-uploads/e095fed5-d5fa-4e58-8606-5d993cf77800.png')",
+				'partners-pattern': "url('/lovable-uploads/29671e65-dd7d-4e61-8d40-3956cb9943e5.png')",
+				'science-pattern': "url('/lovable-uploads/dbda2357-cadf-4d13-94bd-89697d24774c.png')",
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
 			}
 		}
