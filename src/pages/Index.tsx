@@ -1,4 +1,3 @@
-
 import MainLayout from '@/layout/MainLayout';
 import HeroSection from '@/components/HeroSection';
 import FeaturedProject from '@/components/FeaturedProject';
@@ -6,7 +5,7 @@ import CourseCard from '@/components/CourseCard';
 import Partners from '@/components/Partners';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Microscope, Book, Flask, GraduationCap, Users } from 'lucide-react';
+import { Microscope, Book, Flask, GraduationCap, Users, Beaker } from 'lucide-react';
 
 const Index = () => {
   return (
@@ -102,7 +101,7 @@ const Index = () => {
             
             <div className="bg-white rounded-xl p-8 shadow-md hover:shadow-xl transition-shadow">
               <div className="bg-primary/10 rounded-full w-16 h-16 flex items-center justify-center mb-6">
-                <Flask className="text-primary h-8 w-8" />
+                <Beaker className="text-primary h-8 w-8" />
               </div>
               <h4 className="text-xl font-semibold mb-3">Graduate Research</h4>
               <p className="text-muted-foreground mb-6">

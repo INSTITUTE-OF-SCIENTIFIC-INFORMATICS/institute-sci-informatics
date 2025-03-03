@@ -1,9 +1,6 @@
-
 import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
-
-<lov-add-dependency>framer-motion@latest</lov-add-dependency>
 
 const Partners = () => {
   const [width, setWidth] = useState(0);
