@@ -116,6 +116,14 @@ export default {
 				'pulse-slow': {
 					'0%, 100%': { opacity: '1' },
 					'50%': { opacity: '0.8' }
+				},
+				'testimonial-slide-in': {
+					'0%': { transform: 'translateX(100%)', opacity: '0' },
+					'100%': { transform: 'translateX(0)', opacity: '1' }
+				},
+				'testimonial-slide-out': {
+					'0%': { transform: 'translateX(-100%)', opacity: '0' },
+					'100%': { transform: 'translateX(0)', opacity: '1' }
 				}
 			},
 			animation: {
@@ -127,7 +135,9 @@ export default {
 				'scale-out': 'scale-out 0.3s ease-out',
 				'slide-in': 'slide-in 0.4s ease-out',
 				'slide-up': 'slide-up 0.4s ease-out',
-				'pulse-slow': 'pulse-slow 3s infinite'
+				'pulse-slow': 'pulse-slow 3s infinite',
+				'testimonial-slide-in': 'testimonial-slide-in 0.5s ease-out',
+				'testimonial-slide-out': 'testimonial-slide-out 0.5s ease-out'
 			},
 			backgroundImage: {
 				'hero-pattern': "linear-gradient(to right, rgba(29, 78, 216, 0.8), rgba(124, 58, 237, 0.8)), url('/lovable-uploads/dcfef9a3-6472-482c-94e8-322b42dbcaa5.png')",
