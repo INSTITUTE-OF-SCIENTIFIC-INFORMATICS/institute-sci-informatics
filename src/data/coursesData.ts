@@ -1,4 +1,3 @@
-
 export interface CourseType {
   title: string;
   description: string;
@@ -12,6 +11,16 @@ export interface CourseType {
 
 // Course data
 export const courses: CourseType[] = [
+  {
+    title: "Open Source Revolution in Drug Discovery",
+    description: "Join a global collaboration to develop tools and analyze data for breakthrough medicines. Make a real impact on global health while building your portfolio.",
+    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
+    category: "Free",
+    duration: "8 weeks",
+    students: 0,
+    rating: 5,
+    maxRating: 5
+  },
   {
     title: "Introduction to Cheminformatics",
     description: "Learn the foundations of chemical information handling and computational methods for chemical data analysis.",

@@ -7,12 +7,14 @@ import CoursesSection from '@/components/courses/CoursesSection';
 import SupervisionSection from '@/components/supervision/SupervisionSection';
 import TestimonialsSection from '@/components/testimonials/TestimonialsSection';
 import CTASection from '@/components/cta/CTASection';
+import FeaturedCourseAnnouncement from '@/components/courses/FeaturedCourseAnnouncement';
 import { courses } from '@/data/coursesData';
 
 const Index = () => {
   return (
     <MainLayout>
       <HeroSection />
+      <FeaturedCourseAnnouncement />
       <CoursesSection courses={courses} />
       <FeaturedProject />
       <TestimonialsSection />
