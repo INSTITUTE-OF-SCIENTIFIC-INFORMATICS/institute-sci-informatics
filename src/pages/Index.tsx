@@ -5,7 +5,7 @@ import CourseCard from '@/components/CourseCard';
 import Partners from '@/components/Partners';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Microscope, Book, Flask, GraduationCap, Users, Beaker } from 'lucide-react';
+import { Microscope, Book, Beaker, GraduationCap, Users } from 'lucide-react';
 
 const Index = () => {
   return (
