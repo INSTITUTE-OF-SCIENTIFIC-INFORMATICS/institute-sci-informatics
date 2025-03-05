@@ -108,7 +108,7 @@ const TradChemChatbot = () => {
       {!isOpen && (
         <Button
           onClick={toggleChat}
-          className="rounded-full w-14 h-14 shadow-lg bg-institute-purple hover:bg-institute-purple/90 text-white"
+          className="rounded-full w-14 h-14 shadow-lg bg-institute-purple hover:bg-institute-blue text-white"
         >
           <MessageCircle size={24} />
         </Button>
@@ -169,9 +169,9 @@ const TradChemChatbot = () => {
                 ))}
                 {isLoading && (
                   <div className="flex gap-1 items-center text-gray-500">
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" />
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-100" />
-                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce delay-200" />
+                    <div className="w-2 h-2 bg-institute-purple rounded-full animate-bounce" />
+                    <div className="w-2 h-2 bg-institute-purple rounded-full animate-bounce delay-100" />
+                    <div className="w-2 h-2 bg-institute-purple rounded-full animate-bounce delay-200" />
                   </div>
                 )}
                 <div ref={messagesEndRef} />
@@ -189,7 +189,7 @@ const TradChemChatbot = () => {
                 <Button
                   onClick={handleSendMessage}
                   size="icon"
-                  className="bg-institute-purple hover:bg-institute-purple/90"
+                  className="bg-institute-purple hover:bg-institute-blue"
                 >
                   <Send size={18} className="text-white" />
                 </Button>
