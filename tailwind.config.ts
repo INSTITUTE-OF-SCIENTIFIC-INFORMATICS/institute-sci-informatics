@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -74,7 +73,6 @@ export default {
 					teal: '#0d9488',
 					gold: '#F59E0B',
 					red: '#ef4444',
-					orange: '#F97316',
 					yellow: '#FEF7CD',
 					violet: '#7E69AB',
 				}
@@ -144,7 +142,7 @@ export default {
 				'testimonial-slide-out': 'testimonial-slide-out 0.5s ease-out'
 			},
 			backgroundImage: {
-				'hero-pattern': "linear-gradient(to right, rgba(239, 68, 68, 0.7), rgba(139, 92, 246, 0.7)), url('/lovable-uploads/e095fed5-d5fa-4e58-8606-5d993cf77800.png')",
+				'hero-pattern': "linear-gradient(to right, rgba(14, 165, 233, 0.7), rgba(139, 92, 246, 0.7)), url('/lovable-uploads/e095fed5-d5fa-4e58-8606-5d993cf77800.png')",
 				'partners-pattern': "url('/lovable-uploads/29671e65-dd7d-4e61-8d40-3956cb9943e5.png')",
 				'science-pattern': "url('/lovable-uploads/dbda2357-cadf-4d13-94bd-89697d24774c.png')",
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

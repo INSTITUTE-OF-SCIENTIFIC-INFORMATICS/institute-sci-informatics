@@ -1,12 +1,39 @@
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { Atom, Hash, Sigma, Variable } from 'lucide-react';
 
 const HeroSection = () => {
   return (
     <section className="relative min-h-screen flex items-center">
       {/* Background with overlay gradient */}
-      <div className="absolute inset-0 bg-hero-pattern bg-cover bg-center bg-no-repeat"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-institute-blue/80 to-institute-purple/80 bg-cover bg-center bg-no-repeat">
+        {/* Mathematical and molecular background elements */}
+        <div className="absolute inset-0 overflow-hidden opacity-20">
+          {/* Mathematical symbols */}
+          <div className="absolute top-20 left-20 text-white text-4xl">∫e<sup>x</sup> dx = e<sup>x</sup> + C</div>
+          <div className="absolute top-40 right-20 text-white text-3xl">E = mc<sup>2</sup></div>
+          <div className="absolute bottom-20 left-1/4 text-white text-4xl">∑<sub>n=0</sub><sup>∞</sup> x<sup>n</sup>/n!</div>
+          <div className="absolute top-1/3 left-1/3 text-white text-3xl">F = G(m₁m₂)/r²</div>
+          
+          {/* Molecular illustrations */}
+          <div className="absolute top-1/2 left-20">
+            <Atom className="h-24 w-24 text-white" />
+          </div>
+          <div className="absolute bottom-40 right-40">
+            <Hash className="h-16 w-16 text-white" />
+          </div>
+          <div className="absolute top-40 left-40">
+            <Sigma className="h-20 w-20 text-white" />
+          </div>
+          <div className="absolute bottom-1/3 right-1/4">
+            <Variable className="h-20 w-20 text-white" />
+          </div>
+          
+          {/* Benzene ring representation */}
+          <div className="absolute top-1/4 right-1/3 text-white text-8xl">⌬</div>
+        </div>
+      </div>
       
       {/* Content */}
       <div className="container relative z-10">
@@ -15,7 +42,7 @@ const HeroSection = () => {
             <img 
               src="/lovable-uploads/e7fac7ec-b4d4-40d2-a483-56b82c7a13a2.png"
               alt="Institute Logo" 
-              className="w-32 h-32 object-contain"
+              className="w-48 h-48 object-contain" /* Increased from w-32 h-32 */
             />
           </div>
           
@@ -28,7 +55,7 @@ const HeroSection = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in animate-delay-300">
-            <Button className="text-lg py-6 px-8 bg-institute-yellow text-institute-red hover:bg-white/90">
+            <Button className="text-lg py-6 px-8 bg-institute-purple text-white hover:bg-institute-blue/90">
               Explore Courses
             </Button>
             <Button variant="outline" className="text-lg py-6 px-8 text-white border-white hover:bg-white/20">
