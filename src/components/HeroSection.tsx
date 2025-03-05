@@ -94,7 +94,7 @@ const HeroSection = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in animate-delay-300">
-            <Button className="text-lg py-6 px-8 bg-institute-purple text-white hover:bg-institute-blue">
+            <Button className="text-lg py-6 px-8 bg-institute-purple text-white hover:bg-institute-purple/90">
               Explore Courses
             </Button>
             <Button variant="outline" className="text-lg py-6 px-8 text-white border-white hover:bg-white/20">

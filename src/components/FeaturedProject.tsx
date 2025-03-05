@@ -10,7 +10,7 @@ const FeaturedProject = () => {
           {/* Project Image */}
           <div className="md:w-1/2 animate-slide-in">
             <div className="relative">
-              <div className="absolute -right-4 -bottom-4 w-full h-full rounded-xl border-2 border-institute-orange/30 -z-10"></div>
+              <div className="absolute -right-4 -bottom-4 w-full h-full rounded-xl border-2 border-institute-purple/30 -z-10"></div>
               <img 
                 src="/lovable-uploads/8d43a969-0c24-4a9f-9793-d8efc036aa94.png" 
                 alt="Cheminformatics Project" 
@@ -21,7 +21,7 @@ const FeaturedProject = () => {
           
           {/* Project Content */}
           <div className="md:w-1/2 animate-slide-in animate-delay-200">
-            <h2 className="text-sm uppercase text-institute-orange font-semibold tracking-wider mb-2">
+            <h2 className="text-sm uppercase text-institute-purple font-semibold tracking-wider mb-2">
               Open Source Project
             </h2>
             
@@ -35,18 +35,18 @@ const FeaturedProject = () => {
             </p>
             
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-              <div className="flex flex-col items-center bg-white p-4 rounded-lg shadow-sm border border-institute-yellow/30">
-                <GitBranch className="text-institute-red h-6 w-6 mb-2" />
+              <div className="flex flex-col items-center bg-white p-4 rounded-lg shadow-sm border border-institute-purple/30">
+                <GitBranch className="text-institute-purple h-6 w-6 mb-2" />
                 <span className="text-sm font-medium">Open Source</span>
               </div>
               
-              <div className="flex flex-col items-center bg-white p-4 rounded-lg shadow-sm border border-institute-yellow/30">
-                <Users className="text-institute-orange h-6 w-6 mb-2" />
+              <div className="flex flex-col items-center bg-white p-4 rounded-lg shadow-sm border border-institute-purple/30">
+                <Users className="text-institute-blue h-6 w-6 mb-2" />
                 <span className="text-sm font-medium">Collaborative</span>
               </div>
               
-              <div className="flex flex-col items-center bg-white p-4 rounded-lg shadow-sm border border-institute-yellow/30">
-                <Database className="text-institute-violet h-6 w-6 mb-2" />
+              <div className="flex flex-col items-center bg-white p-4 rounded-lg shadow-sm border border-institute-purple/30">
+                <Database className="text-institute-purple h-6 w-6 mb-2" />
                 <span className="text-sm font-medium">Real-world Data</span>
               </div>
             </div>

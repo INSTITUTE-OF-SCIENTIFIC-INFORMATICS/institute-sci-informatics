@@ -14,12 +14,12 @@ const FeaturedCourseAnnouncement = () => {
   };
 
   return (
-    <section className="py-16 bg-gradient-to-r from-institute-orange/10 to-institute-violet/10">
+    <section className="py-16 bg-gradient-to-r from-institute-purple/10 to-institute-blue/10">
       <div className="container">
         <Card className="overflow-hidden border-0 shadow-lg">
           <div className="grid grid-cols-1 lg:grid-cols-2">
             {/* Image Column */}
-            <div className="bg-gradient-to-br from-institute-orange to-institute-red p-8 text-white flex flex-col justify-center">
+            <div className="bg-gradient-to-br from-institute-purple to-institute-blue p-8 text-white flex flex-col justify-center">
               <Badge className="self-start mb-4 bg-white/20 hover:bg-white/30 text-white">FREE COURSE</Badge>
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
                 🚀 Join the Open Source Revolution in Drug Discovery! 🌍
@@ -28,7 +28,7 @@ const FeaturedCourseAnnouncement = () => {
                 Are you ready to be part of the next big breakthrough in science?
                 Contribute to Open Source Projects for Drug Discovery and make a real impact on global health!
               </p>
-              <Button onClick={handleEnroll} className="self-start bg-institute-yellow text-institute-red hover:bg-white/90">
+              <Button onClick={handleEnroll} className="self-start bg-institute-blue text-white hover:bg-institute-blue/90">
                 Enroll Now - Free Access
               </Button>
             </div>
@@ -49,8 +49,8 @@ const FeaturedCourseAnnouncement = () => {
                 </div>
                 
                 <div className="flex items-start gap-4">
-                  <div className="bg-institute-orange/10 p-3 rounded-full">
-                    <Brain className="h-6 w-6 text-institute-orange" />
+                  <div className="bg-institute-purple/10 p-3 rounded-full">
+                    <Brain className="h-6 w-6 text-institute-purple" />
                   </div>
                   <div>
                     <h4 className="text-lg font-medium">Accelerate Innovation</h4>
@@ -59,8 +59,8 @@ const FeaturedCourseAnnouncement = () => {
                 </div>
                 
                 <div className="flex items-start gap-4">
-                  <div className="bg-institute-violet/10 p-3 rounded-full">
-                    <Share2 className="h-6 w-6 text-institute-violet" />
+                  <div className="bg-institute-blue/10 p-3 rounded-full">
+                    <Share2 className="h-6 w-6 text-institute-blue" />
                   </div>
                   <div>
                     <h4 className="text-lg font-medium">Share Knowledge</h4>
@@ -82,12 +82,12 @@ const FeaturedCourseAnnouncement = () => {
                 
                 <div className="flex items-center gap-1">
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="h-4 w-4 text-institute-gold fill-institute-gold" />
+                    <Star key={i} className="h-4 w-4 text-institute-purple fill-institute-purple" />
                   ))}
                 </div>
               </div>
               
-              <Button onClick={handleEnroll} className="w-full bg-institute-red hover:bg-institute-red/90 text-white">Get Started Today</Button>
+              <Button onClick={handleEnroll} className="w-full bg-institute-purple hover:bg-institute-purple/90 text-white">Get Started Today</Button>
             </div>
           </div>
         </Card>
