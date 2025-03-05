@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Dna, Database, Flask as FlaskIcon, Lock, Atom, User } from 'lucide-react';
+import { Dna, Database, FlaskConical, Lock, Atom, User } from 'lucide-react';
 
 const TradChemDBSection = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -154,7 +154,7 @@ const TradChemDBSection = () => {
                           
                           <div className="p-4 border border-institute-purple/20 rounded-lg bg-white">
                             <div className="flex items-center mb-2">
-                              <FlaskIcon className="h-5 w-5 text-institute-purple mr-2" />
+                              <FlaskConical className="h-5 w-5 text-institute-purple mr-2" />
                               <h3 className="font-medium">Ginsenosides</h3>
                             </div>
                             <p className="text-sm text-gray-600">Active compounds in Ginseng used in Traditional Chinese Medicine</p>
