@@ -118,7 +118,7 @@ const TradChemChatbot = () => {
       {isOpen && (
         <div
           className={cn(
-            "bg-white rounded-lg shadow-2xl flex flex-col transition-all duration-300 border border-gray-200",
+            "bg-white rounded-lg shadow-2xl flex flex-col transition-all duration-300 border border-institute-purple/20",
             isMinimized ? "w-72 h-auto" : "w-80 sm:w-96 h-[500px]"
           )}
         >

@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -126,6 +127,14 @@ export default {
 				'testimonial-slide-out': {
 					'0%': { transform: 'translateX(-100%)', opacity: '0' },
 					'100%': { transform: 'translateX(0)', opacity: '1' }
+				},
+				'float': {
+					'0%, 100%': { transform: 'translateY(0px)' },
+					'50%': { transform: 'translateY(-10px)' }
+				},
+				'spin': {
+					from: { transform: 'rotate(0deg)' },
+					to: { transform: 'rotate(360deg)' }
 				}
 			},
 			animation: {
@@ -139,7 +148,9 @@ export default {
 				'slide-up': 'slide-up 0.4s ease-out',
 				'pulse-slow': 'pulse-slow 3s infinite',
 				'testimonial-slide-in': 'testimonial-slide-in 0.5s ease-out',
-				'testimonial-slide-out': 'testimonial-slide-out 0.5s ease-out'
+				'testimonial-slide-out': 'testimonial-slide-out 0.5s ease-out',
+				'float': 'float 6s ease-in-out infinite',
+				'spin-slow': 'spin 20s linear infinite'
 			},
 			backgroundImage: {
 				'hero-pattern': "linear-gradient(to right, rgba(14, 165, 233, 0.7), rgba(139, 92, 246, 0.7)), url('/lovable-uploads/e095fed5-d5fa-4e58-8606-5d993cf77800.png')",
