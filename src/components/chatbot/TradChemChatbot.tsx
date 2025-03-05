@@ -66,7 +66,7 @@ const TradChemChatbot = () => {
       if (userQuery.includes("turmeric") || userQuery.includes("curcumin")) {
         responseIndex = 0;
       } else if (userQuery.includes("ginseng")) {
-        responseIndex = the;
+        responseIndex = 1;
       } else if (userQuery.includes("ashwagandha")) {
         responseIndex = 2;
       } else if (userQuery.includes("licorice")) {
