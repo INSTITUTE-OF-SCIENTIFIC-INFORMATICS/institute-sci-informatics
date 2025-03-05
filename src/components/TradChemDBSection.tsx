@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { DNA, Database, Flask, Lock, LucideAtom, User } from 'lucide-react';
+import { Dna, Database, Flask as FlaskIcon, Lock, Atom, User } from 'lucide-react';
 
 const TradChemDBSection = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -138,7 +138,7 @@ const TradChemDBSection = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
                           <div className="p-4 border border-institute-purple/20 rounded-lg bg-white">
                             <div className="flex items-center mb-2">
-                              <LucideAtom className="h-5 w-5 text-institute-purple mr-2" />
+                              <Atom className="h-5 w-5 text-institute-purple mr-2" />
                               <h3 className="font-medium">Curcumin</h3>
                             </div>
                             <p className="text-sm text-gray-600">Active compound in turmeric used in Ayurvedic medicine</p>
@@ -154,7 +154,7 @@ const TradChemDBSection = () => {
                           
                           <div className="p-4 border border-institute-purple/20 rounded-lg bg-white">
                             <div className="flex items-center mb-2">
-                              <Flask className="h-5 w-5 text-institute-purple mr-2" />
+                              <FlaskIcon className="h-5 w-5 text-institute-purple mr-2" />
                               <h3 className="font-medium">Ginsenosides</h3>
                             </div>
                             <p className="text-sm text-gray-600">Active compounds in Ginseng used in Traditional Chinese Medicine</p>
@@ -173,14 +173,14 @@ const TradChemDBSection = () => {
                     
                     <TabsContent value="browse" className="pt-4">
                       <div className="text-center py-8">
-                        <DNA className="h-12 w-12 text-institute-purple mx-auto mb-4 opacity-50" />
+                        <Dna className="h-12 w-12 text-institute-purple mx-auto mb-4 opacity-50" />
                         <p className="text-gray-500">Browse by traditional medicine system coming soon</p>
                       </div>
                     </TabsContent>
                     
                     <TabsContent value="favorites" className="pt-4">
                       <div className="text-center py-8">
-                        <DNA className="h-12 w-12 text-institute-blue mx-auto mb-4 opacity-50" />
+                        <Dna className="h-12 w-12 text-institute-blue mx-auto mb-4 opacity-50" />
                         <p className="text-gray-500">Your saved compounds will appear here</p>
                       </div>
                     </TabsContent>
