@@ -9,7 +9,6 @@ import TestimonialsSection from '@/components/testimonials/TestimonialsSection';
 import CTASection from '@/components/cta/CTASection';
 import FeaturedCourseAnnouncement from '@/components/courses/FeaturedCourseAnnouncement';
 import ScienceHubSection from '@/components/ScienceHubSection';
-import TradChemChatbot from '@/components/chatbot/TradChemChatbot';
 import TradChemDBSection from '@/components/TradChemDBSection';
 import { courses } from '@/data/coursesData';
 
@@ -26,7 +25,6 @@ const Index = () => {
       <TestimonialsSection />
       <SupervisionSection />
       <CTASection />
-      <TradChemChatbot />
     </MainLayout>
   );
 };

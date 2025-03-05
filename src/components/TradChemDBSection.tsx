@@ -1,22 +1,50 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Dna, Database, FlaskConical, Lock, Atom, User } from 'lucide-react';
+import { Dna, Database, FlaskConical, Lock, Atom, User, UserPlus } from 'lucide-react';
 
 const TradChemDBSection = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [name, setName] = useState('');
+  const [institution, setInstitution] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
+  const [registrationError, setRegistrationError] = useState('');
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     // Simulate login - in a real app, this would connect to an authentication service
     if (email && password) {
       setIsLoggedIn(true);
+      setRegistrationError('');
+    }
+  };
+
+  const handleRegister = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Basic validation
+    if (password !== confirmPassword) {
+      setRegistrationError('Passwords do not match');
+      return;
+    }
+    
+    // Simulate registration - in a real app, this would connect to an authentication service
+    if (email && password && name) {
+      // For demo purposes, we'll just log the user in
+      setIsLoggedIn(true);
+      setRegistrationError('');
+      // Reset form fields
+      setShowRegister(false);
+      setConfirmPassword('');
+      setName('');
+      setInstitution('');
+    } else {
+      setRegistrationError('Please fill in all required fields');
     }
   };
 
@@ -24,6 +52,16 @@ const TradChemDBSection = () => {
     setIsLoggedIn(false);
     setEmail('');
     setPassword('');
+    setConfirmPassword('');
+    setName('');
+    setInstitution('');
+    setShowRegister(false);
+    setRegistrationError('');
+  };
+
+  const toggleForm = () => {
+    setShowRegister(!showRegister);
+    setRegistrationError('');
   };
 
   return (
@@ -46,62 +84,207 @@ const TradChemDBSection = () => {
           <Card className="border border-institute-purple/20 bg-white/80 backdrop-blur-sm shadow-xl">
             <CardHeader className="bg-gradient-to-r from-institute-blue/10 to-institute-purple/10 border-b border-institute-purple/10">
               <CardTitle className="text-2xl text-center text-gray-800">
-                {isLoggedIn ? 'TradChem Database Explorer' : 'Login to Access TradChemLLM Database'}
+                {isLoggedIn 
+                  ? 'TradChem Database Explorer' 
+                  : showRegister 
+                    ? 'Create an Account' 
+                    : 'Login to Access TradChemLLM Database'}
               </CardTitle>
               <CardDescription className="text-center text-gray-600">
                 {isLoggedIn 
                   ? 'Search for traditional medicine chemicals and formulations' 
-                  : 'Enter your credentials to access the chemical database'}
+                  : showRegister
+                    ? 'Create your account to access the TradChemLLM database'
+                    : 'Enter your credentials to access the chemical database'}
               </CardDescription>
             </CardHeader>
             <CardContent className="pt-6">
               {!isLoggedIn ? (
-                <form onSubmit={handleLogin} className="space-y-4">
-                  <div className="space-y-2">
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                      Email Address
-                    </label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <User className="h-5 w-5 text-gray-400" />
+                showRegister ? (
+                  <form onSubmit={handleRegister} className="space-y-4">
+                    <div className="space-y-2">
+                      <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                        Full Name *
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <User className="h-5 w-5 text-gray-400" />
+                        </div>
+                        <Input
+                          id="name"
+                          type="text"
+                          placeholder="Enter your full name"
+                          className="pl-10"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          required
+                        />
                       </div>
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="Enter your email"
-                        className="pl-10"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                      />
                     </div>
-                  </div>
-                  <div className="space-y-2">
-                    <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                      Password
-                    </label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <Lock className="h-5 w-5 text-gray-400" />
+                    
+                    <div className="space-y-2">
+                      <label htmlFor="register-email" className="block text-sm font-medium text-gray-700">
+                        Email Address *
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <User className="h-5 w-5 text-gray-400" />
+                        </div>
+                        <Input
+                          id="register-email"
+                          type="email"
+                          placeholder="Enter your email"
+                          className="pl-10"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          required
+                        />
                       </div>
-                      <Input
-                        id="password"
-                        type="password"
-                        placeholder="Enter your password"
-                        className="pl-10"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                      />
                     </div>
-                  </div>
-                  <Button 
-                    type="submit" 
-                    className="w-full bg-institute-purple hover:bg-institute-blue text-white"
-                  >
-                    Access Database
-                  </Button>
-                </form>
+                    
+                    <div className="space-y-2">
+                      <label htmlFor="institution" className="block text-sm font-medium text-gray-700">
+                        Institution (Optional)
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <Database className="h-5 w-5 text-gray-400" />
+                        </div>
+                        <Input
+                          id="institution"
+                          type="text"
+                          placeholder="Enter your institution (if applicable)"
+                          className="pl-10"
+                          value={institution}
+                          onChange={(e) => setInstitution(e.target.value)}
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <label htmlFor="register-password" className="block text-sm font-medium text-gray-700">
+                        Password *
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <Lock className="h-5 w-5 text-gray-400" />
+                        </div>
+                        <Input
+                          id="register-password"
+                          type="password"
+                          placeholder="Create a password"
+                          className="pl-10"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          required
+                        />
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-700">
+                        Confirm Password *
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <Lock className="h-5 w-5 text-gray-400" />
+                        </div>
+                        <Input
+                          id="confirm-password"
+                          type="password"
+                          placeholder="Confirm your password"
+                          className="pl-10"
+                          value={confirmPassword}
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                          required
+                        />
+                      </div>
+                    </div>
+                    
+                    {registrationError && (
+                      <div className="p-3 bg-red-100 border border-red-200 text-red-800 rounded-md text-sm">
+                        {registrationError}
+                      </div>
+                    )}
+                    
+                    <Button 
+                      type="submit" 
+                      className="w-full bg-institute-purple hover:bg-institute-blue text-white"
+                    >
+                      Create Account
+                    </Button>
+                    
+                    <div className="text-center">
+                      <Button 
+                        type="button" 
+                        variant="link" 
+                        className="text-institute-purple hover:text-institute-blue"
+                        onClick={toggleForm}
+                      >
+                        Already have an account? Log in
+                      </Button>
+                    </div>
+                  </form>
+                ) : (
+                  <form onSubmit={handleLogin} className="space-y-4">
+                    <div className="space-y-2">
+                      <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                        Email Address
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <User className="h-5 w-5 text-gray-400" />
+                        </div>
+                        <Input
+                          id="email"
+                          type="email"
+                          placeholder="Enter your email"
+                          className="pl-10"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          required
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                        Password
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                          <Lock className="h-5 w-5 text-gray-400" />
+                        </div>
+                        <Input
+                          id="password"
+                          type="password"
+                          placeholder="Enter your password"
+                          className="pl-10"
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          required
+                        />
+                      </div>
+                    </div>
+                    <Button 
+                      type="submit" 
+                      className="w-full bg-institute-purple hover:bg-institute-blue text-white"
+                    >
+                      Access Database
+                    </Button>
+                    
+                    <div className="text-center">
+                      <Button 
+                        type="button" 
+                        variant="link" 
+                        className="text-institute-purple hover:text-institute-blue"
+                        onClick={toggleForm}
+                      >
+                        <UserPlus className="h-4 w-4 mr-1" />
+                        Create a new account
+                      </Button>
+                    </div>
+                  </form>
+                )
               ) : (
                 <div className="space-y-6">
                   <Tabs defaultValue="search" className="w-full">
@@ -199,7 +382,9 @@ const TradChemDBSection = () => {
                 </Button>
               ) : (
                 <p className="text-xs text-gray-500 mx-auto">
-                  For demo purposes, any email and password combination will work
+                  {showRegister 
+                    ? "Fields marked with * are required" 
+                    : "For demo purposes, any email and password combination will work"}
                 </p>
               )}
             </CardFooter>
