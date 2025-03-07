@@ -1,14 +1,17 @@
 
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Book, GraduationCap, Users, Menu, X, FileText } from 'lucide-react';
+import { Book, GraduationCap, Users, Menu, X, FileText, User, Database } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useUser } from '@/context/UserContext';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, signOut } = useUser();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,6 +28,15 @@ const Navbar = () => {
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate('/auth');
+  };
+
+  const handleSignIn = () => {
+    navigate('/auth');
   };
 
   return (
@@ -92,15 +104,54 @@ const Navbar = () => {
             <FileText className="h-4 w-4" />
             <span>Resources</span>
           </Link>
-          <Button
-            variant={isScrolled ? "default" : "outline"}
-            className={cn(
-              "transition-all",
-              !isScrolled && "text-white hover:bg-white/20 border-white"
-            )}
-          >
-            Sign In
-          </Button>
+          
+          {user ? (
+            <>
+              <Link 
+                to="/profile" 
+                className={cn(
+                  "flex items-center space-x-1 hover:text-primary transition-colors",
+                  isScrolled ? "text-foreground" : "text-white",
+                  location.pathname === "/profile" && "text-primary"
+                )}
+              >
+                <User className="h-4 w-4" />
+                <span>Profile</span>
+              </Link>
+              <Link 
+                to="/records" 
+                className={cn(
+                  "flex items-center space-x-1 hover:text-primary transition-colors",
+                  isScrolled ? "text-foreground" : "text-white",
+                  location.pathname === "/records" && "text-primary"
+                )}
+              >
+                <Database className="h-4 w-4" />
+                <span>Records</span>
+              </Link>
+              <Button
+                variant={isScrolled ? "default" : "outline"}
+                className={cn(
+                  "transition-all",
+                  !isScrolled && "text-white hover:bg-white/20 border-white"
+                )}
+                onClick={handleSignOut}
+              >
+                Sign Out
+              </Button>
+            </>
+          ) : (
+            <Button
+              variant={isScrolled ? "default" : "outline"}
+              className={cn(
+                "transition-all",
+                !isScrolled && "text-white hover:bg-white/20 border-white"
+              )}
+              onClick={handleSignIn}
+            >
+              Sign In
+            </Button>
+          )}
         </nav>
 
         {/* Mobile menu button */}
@@ -142,7 +193,37 @@ const Navbar = () => {
             <FileText className="h-5 w-5 text-primary" />
             <span>Resources</span>
           </Link>
-          <Button size="lg" className="w-full">Sign In</Button>
+          
+          {user ? (
+            <>
+              <Link to="/profile" className="flex items-center space-x-2 text-xl" onClick={toggleMobileMenu}>
+                <User className="h-5 w-5 text-primary" />
+                <span>Profile</span>
+              </Link>
+              <Link to="/records" className="flex items-center space-x-2 text-xl" onClick={toggleMobileMenu}>
+                <Database className="h-5 w-5 text-primary" />
+                <span>Records</span>
+              </Link>
+              <Button 
+                size="lg" 
+                className="w-full"
+                onClick={handleSignOut}
+              >
+                Sign Out
+              </Button>
+            </>
+          ) : (
+            <Button 
+              size="lg" 
+              className="w-full"
+              onClick={() => {
+                navigate('/auth');
+                toggleMobileMenu();
+              }}
+            >
+              Sign In
+            </Button>
+          )}
         </nav>
       </div>
     </header>
