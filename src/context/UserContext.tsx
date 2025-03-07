@@ -2,11 +2,12 @@
 import { createContext, useState, useEffect, useContext, ReactNode } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { Session, User } from '@supabase/supabase-js';
+import { Profile } from '@/types/supabase';
 
 interface UserContextType {
   session: Session | null;
   user: User | null;
-  profile: any | null;
+  profile: Profile | null;
   loading: boolean;
   signOut: () => Promise<void>;
 }
@@ -22,7 +23,7 @@ export const UserContext = createContext<UserContextType>({
 export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
-  const [profile, setProfile] = useState<any | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -42,7 +43,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
         if (error) {
           console.error('Error fetching profile:', error);
         } else {
-          setProfile(data);
+          setProfile(data as Profile);
         }
       }
       
@@ -67,7 +68,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
           if (error) {
             console.error('Error fetching profile:', error);
           } else {
-            setProfile(data);
+            setProfile(data as Profile);
           }
         } else {
           setProfile(null);

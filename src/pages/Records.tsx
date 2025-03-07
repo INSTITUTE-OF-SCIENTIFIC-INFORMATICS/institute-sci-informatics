@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -7,19 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useUser } from '@/context/UserContext';
-
-interface PersonalRecord {
-  id: string;
-  user_id: string;
-  course_selected: string;
-  completion_percentage: number;
-  course_start_date: string;
-  course_end_date: string | null;
-  open_source_collaborations: string;
-  open_source_collaboration_percentage: number;
-  success_rate: number;
-  created_at?: string;
-}
+import { PersonalRecord } from '@/types/supabase';
 
 const Records = () => {
   const { user } = useUser();
@@ -53,7 +40,7 @@ const Records = () => {
         
       if (error) throw error;
       
-      setRecords(data || []);
+      setRecords(data as PersonalRecord[] || []);
     } catch (error: any) {
       console.error('Error fetching records:', error);
     } finally {
@@ -97,7 +84,7 @@ const Records = () => {
 
       const { error } = await supabase
         .from('personal_records')
-        .insert([newRecord]);
+        .insert([newRecord] as any);
 
       if (error) throw error;
       
@@ -150,7 +137,6 @@ const Records = () => {
           <h1 className="text-3xl font-bold mb-8 text-center">Your Personal Records</h1>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {/* Form to add new record */}
             <Card className="border border-institute-purple/20 bg-white/80 backdrop-blur-sm shadow-xl">
               <CardHeader className="bg-gradient-to-r from-institute-blue/10 to-institute-purple/10 border-b border-institute-purple/10">
                 <CardTitle className="text-xl text-gray-800">
@@ -287,7 +273,6 @@ const Records = () => {
               </CardContent>
             </Card>
             
-            {/* List of existing records */}
             <div className="space-y-4">
               <h2 className="text-xl font-semibold">Your Records</h2>
               

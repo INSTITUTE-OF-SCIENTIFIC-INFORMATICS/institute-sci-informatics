@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useUser } from '@/context/UserContext';
+import { Profile as ProfileType } from '@/types/supabase';
 
 const Profile = () => {
   const { user, profile } = useUser();
@@ -43,18 +44,17 @@ const Profile = () => {
     setError('');
 
     try {
-      const updates = {
+      const updates: Partial<ProfileType> = {
         id: user.id,
         name,
         location,
         bio,
         avatar_url: avatarUrl,
-        updated_at: new Date(),
       };
 
       const { error } = await supabase
         .from('profiles')
-        .upsert(updates);
+        .upsert(updates as any);
 
       if (error) throw error;
       
