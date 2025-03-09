@@ -236,8 +236,8 @@ const HeroSection = () => {
         </div>
       </div>
       
-      {/* Custom animation styles */}
-      <style jsx>{`
+      {/* Fix the style element by removing the jsx property */}
+      <style dangerouslySetInnerHTML={{ __html: `
         @keyframes floatAndFade {
           0% {
             opacity: 0;
@@ -259,7 +259,7 @@ const HeroSection = () => {
           pointer-events: none;
           will-change: transform, opacity;
         }
-      `}</style>
+      `}} />
       
       {/* Content */}
       <div className="container relative z-10">
