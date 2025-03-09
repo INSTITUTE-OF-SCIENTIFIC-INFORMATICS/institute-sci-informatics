@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,9 +11,14 @@ interface TradChemDBSectionProps {
   id?: string;
 }
 
+type ChatMessage = {
+  role: 'user' | 'assistant';
+  content: string;
+};
+
 const TradChemDBSection = ({ id }: TradChemDBSectionProps) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [messages, setMessages] = useState<Array<{role: 'user' | 'assistant', content: string}>>([
+  const [messages, setMessages] = useState<ChatMessage[]>([
     {role: 'assistant', content: 'Welcome to TradChemLLM! Ask me about traditional medicine compounds, their benefits, or chemical structures.'}
   ]);
   const [inputMessage, setInputMessage] = useState('');
@@ -28,15 +32,13 @@ const TradChemDBSection = ({ id }: TradChemDBSectionProps) => {
   const handleSendMessage = () => {
     if (inputMessage.trim() === '') return;
     
-    // Add user message
-    const newMessages = [
+    const newMessages: ChatMessage[] = [
       ...messages,
-      {role: 'user', content: inputMessage}
+      {role: 'user' as const, content: inputMessage}
     ];
     
     setMessages(newMessages);
     
-    // Simulate AI response (in a real app, this would call an API)
     setTimeout(() => {
       let response = '';
       
@@ -50,7 +52,12 @@ const TradChemDBSection = ({ id }: TradChemDBSectionProps) => {
         response = "That's an interesting query about traditional medicine. Could you provide more specific details about the compound or medicinal system you're interested in? I can provide information about chemical composition, benefits, traditional uses, and SMILES notations.";
       }
       
-      setMessages(prev => [...prev, {role: 'assistant', content: response}]);
+      const assistantMessage: ChatMessage = {
+        role: 'assistant',
+        content: response
+      };
+      
+      setMessages(prev => [...prev, assistantMessage]);
     }, 1000);
     
     setInputMessage('');
