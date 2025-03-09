@@ -93,17 +93,6 @@ const Navbar = () => {
             <Users className="h-4 w-4" />
             <span>Supervision</span>
           </a>
-          <Link 
-            to="/resources" 
-            className={cn(
-              "flex items-center space-x-1 hover:text-primary transition-colors",
-              isScrolled ? "text-foreground" : "text-white",
-              location.pathname === "/resources" && "text-primary"
-            )}
-          >
-            <FileText className="h-4 w-4" />
-            <span>Resources</span>
-          </Link>
           
           {user ? (
             <>
@@ -142,10 +131,12 @@ const Navbar = () => {
             </>
           ) : (
             <Button
-              variant={isScrolled ? "default" : "outline"}
+              variant={isScrolled ? "secondary" : "default"}
               className={cn(
-                "transition-all",
-                !isScrolled && "text-white hover:bg-white/20 border-white"
+                "transition-all font-medium",
+                isScrolled 
+                  ? "bg-institute-blue hover:bg-institute-blue/90 text-white" 
+                  : "bg-white/20 backdrop-blur-sm text-white hover:bg-white/30 border border-white/50"
               )}
               onClick={handleSignIn}
             >
@@ -189,10 +180,6 @@ const Navbar = () => {
             <Users className="h-5 w-5 text-primary" />
             <span>Supervision</span>
           </a>
-          <Link to="/resources" className="flex items-center space-x-2 text-xl" onClick={toggleMobileMenu}>
-            <FileText className="h-5 w-5 text-primary" />
-            <span>Resources</span>
-          </Link>
           
           {user ? (
             <>

@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Dna, Database, FlaskConical, Lock, Atom, User, UserPlus, Sparkles, Braces, Code } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface TradChemDBSectionProps {
   id?: string;
@@ -20,6 +21,7 @@ const TradChemDBSection = ({ id }: TradChemDBSectionProps) => {
   const [institution, setInstitution] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [registrationError, setRegistrationError] = useState('');
+  const navigate = useNavigate();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,25 +34,7 @@ const TradChemDBSection = ({ id }: TradChemDBSectionProps) => {
 
   const handleRegister = (e: React.FormEvent) => {
     e.preventDefault();
-    // Basic validation
-    if (password !== confirmPassword) {
-      setRegistrationError('Passwords do not match');
-      return;
-    }
-    
-    // Simulate registration - in a real app, this would connect to an authentication service
-    if (email && password && name) {
-      // For demo purposes, we'll just log the user in
-      setIsLoggedIn(true);
-      setRegistrationError('');
-      // Reset form fields
-      setShowRegister(false);
-      setConfirmPassword('');
-      setName('');
-      setInstitution('');
-    } else {
-      setRegistrationError('Please fill in all required fields');
-    }
+    navigate('/auth');
   };
 
   const handleLogout = () => {
@@ -65,8 +49,7 @@ const TradChemDBSection = ({ id }: TradChemDBSectionProps) => {
   };
 
   const toggleForm = () => {
-    setShowRegister(!showRegister);
-    setRegistrationError('');
+    navigate('/auth');
   };
 
   return (
@@ -76,11 +59,11 @@ const TradChemDBSection = ({ id }: TradChemDBSectionProps) => {
           <div className="flex items-center gap-2 mb-4">
             <Database className="h-8 w-8 text-institute-blue" />
             <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-institute-blue to-institute-purple">
-              TradChemLLM Database Access
+              TradChemLLM Access
             </h2>
           </div>
           <p className="text-lg text-gray-700 dark:text-gray-300 max-w-3xl">
-            Access our comprehensive database of traditional medicinal chemicals, 
+            Access our comprehensive collection of traditional medicinal chemicals, 
             including product names, benefits, diseases, chemical compositions, and SMILES notations.
           </p>
         </div>
@@ -91,18 +74,18 @@ const TradChemDBSection = ({ id }: TradChemDBSectionProps) => {
               <CardTitle className="text-2xl text-center text-white flex items-center justify-center gap-2">
                 <Sparkles className="h-5 w-5 text-blue-400" />
                 {isLoggedIn 
-                  ? 'TradChem Database Explorer' 
+                  ? 'TradChem Explorer' 
                   : showRegister 
                     ? 'Create an Account' 
-                    : 'Login to Access TradChemLLM Database'}
+                    : 'Login to Access TradChemLLM'}
                 <Sparkles className="h-5 w-5 text-purple-400" />
               </CardTitle>
               <CardDescription className="text-center text-gray-300">
                 {isLoggedIn 
                   ? 'Search for traditional medicine chemicals and formulations' 
                   : showRegister
-                    ? 'Create your account to access the TradChemLLM database'
-                    : 'Enter your credentials to access the chemical database'}
+                    ? 'Create your account to access the TradChemLLM'
+                    : 'Enter your credentials to access worlds first AI powered data base that consist the details of product_name, benefits, diseases, chemical_composition and SMILES notations for medicines commonly employed in traditional medicinal practices. Traditional Medicine Systems: Herbal medicines, Acupuncture, Homeopathy, Indigenous traditional medicine, Traditional Chinese medicine, Naturopathy, Chiropractic, Osteopathy, Ayurvedic medicine, and Unani medicine etc.'}
               </CardDescription>
             </CardHeader>
             <CardContent className="pt-6 bg-gradient-to-b from-black/90 to-purple-950/20">
@@ -276,7 +259,7 @@ const TradChemDBSection = ({ id }: TradChemDBSectionProps) => {
                       type="submit" 
                       className="w-full bg-gradient-to-r from-institute-blue to-institute-purple hover:from-institute-blue/90 hover:to-institute-purple/90 text-white"
                     >
-                      Access Database
+                      Access TradChemLLM
                     </Button>
                     
                     <div className="text-center">

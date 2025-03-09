@@ -1,5 +1,4 @@
 
-import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import CourseCard from '@/components/CourseCard';
 
@@ -67,12 +66,6 @@ const CoursesSection = ({ courses }: CoursesSectionProps) => {
             </div>
           </TabsContent>
         </Tabs>
-        
-        <div className="text-center">
-          <Button size="lg">
-            View All Courses
-          </Button>
-        </div>
       </div>
     </section>
   );
