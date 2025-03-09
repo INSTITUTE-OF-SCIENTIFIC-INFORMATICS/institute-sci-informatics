@@ -27,6 +27,13 @@ const HeroSection = () => {
     });
   }, []);
 
+  const scrollToTradChemDB = () => {
+    const tradChemDBSection = document.getElementById('tradchem-db-section');
+    if (tradChemDBSection) {
+      tradChemDBSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
       {/* Background with overlay gradient */}
@@ -94,11 +101,11 @@ const HeroSection = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in animate-delay-300">
-            <Button className="text-lg py-6 px-8 bg-institute-purple text-white hover:bg-institute-purple/90">
-              Explore Courses
-            </Button>
-            <Button variant="outline" className="text-lg py-6 px-8 text-white border-white hover:bg-white/20">
-              Learn More
+            <Button 
+              className="text-lg py-6 px-8 bg-institute-purple text-white hover:bg-institute-purple/90"
+              onClick={scrollToTradChemDB}
+            >
+              TradChemLLM
             </Button>
           </div>
         </div>

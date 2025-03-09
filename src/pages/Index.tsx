@@ -1,7 +1,6 @@
 
 import MainLayout from '@/layout/MainLayout';
 import HeroSection from '@/components/HeroSection';
-import FeaturedProject from '@/components/FeaturedProject';
 import Partners from '@/components/Partners';
 import CoursesSection from '@/components/courses/CoursesSection';
 import SupervisionSection from '@/components/supervision/SupervisionSection';
@@ -19,8 +18,7 @@ const Index = () => {
       <FeaturedCourseAnnouncement />
       <ScienceHubSection />
       <CoursesSection courses={courses} />
-      <FeaturedProject />
-      <TradChemDBSection />
+      <TradChemDBSection id="tradchem-db-section" />
       <Partners />
       <TestimonialsSection />
       <SupervisionSection />
