@@ -45,9 +45,9 @@ const TradChemDBSection = ({ id }: TradChemDBSectionProps) => {
       } else if (inputMessage.toLowerCase().includes('ginseng') || inputMessage.toLowerCase().includes('ginsenosides')) {
         response = 'Ginsenosides are the main active compounds in Ginseng (Panax ginseng), used in Traditional Chinese Medicine. They have adaptogenic properties, helping the body resist stress and supporting immune function. There are multiple ginsenosides with different structures and SMILES notations.';
       } else if (inputMessage.toLowerCase().includes('ashwagandha') || inputMessage.toLowerCase().includes('withania')) {
-        response = 'Ashwagandha (Withania somnifera) is an adaptogenic herb used in Ayurvedic medicine. Its main active compounds include withanolides, which have anti-inflammatory, anti-stress, and immunomodulatory properties. It's traditionally used for stress reduction, improved energy, and overall wellbeing.';
+        response = "Ashwagandha (Withania somnifera) is an adaptogenic herb used in Ayurvedic medicine. Its main active compounds include withanolides, which have anti-inflammatory, anti-stress, and immunomodulatory properties. It's traditionally used for stress reduction, improved energy, and overall wellbeing.";
       } else {
-        response = 'That\'s an interesting query about traditional medicine. Could you provide more specific details about the compound or medicinal system you\'re interested in? I can provide information about chemical composition, benefits, traditional uses, and SMILES notations.';
+        response = "That's an interesting query about traditional medicine. Could you provide more specific details about the compound or medicinal system you're interested in? I can provide information about chemical composition, benefits, traditional uses, and SMILES notations.";
       }
       
       setMessages(prev => [...prev, {role: 'assistant', content: response}]);
