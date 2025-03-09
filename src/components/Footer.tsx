@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { 
   Facebook, 
@@ -6,7 +5,7 @@ import {
   Mail, 
   Phone, 
   MapPin,
-  GitHub 
+  Github 
 } from 'lucide-react';
 
 const Footer = () => {
@@ -54,7 +53,7 @@ const Footer = () => {
                 rel="noopener noreferrer" 
                 className="hover:text-primary transition-colors"
               >
-                <GitHub size={20} />
+                <Github size={20} />
               </a>
             </div>
           </div>
