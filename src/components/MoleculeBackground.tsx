@@ -1,64 +1,141 @@
 
 import { useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame, useThree, ThreeElements, ThreeEvent } from '@react-three/fiber';
-import { OrbitControls, Sphere, Line } from '@react-three/drei';
+import { OrbitControls, Sphere, Line, useTexture } from '@react-three/drei';
 import * as THREE from 'three';
 
-// Molecule structure component
+// Atom component with glow effect
 interface AtomProps {
   position: [number, number, number];
   color: string;
   size?: number;
+  pulse?: boolean;
 }
 
-const Atom = ({ position, color, size = 0.3 }: AtomProps) => {
+const Atom = ({ position, color, size = 0.3, pulse = false }: AtomProps) => {
+  const meshRef = useRef<THREE.Mesh>(null);
+  
+  useFrame(({ clock }) => {
+    if (meshRef.current && pulse) {
+      // Subtle pulsing effect
+      const t = clock.getElapsedTime();
+      meshRef.current.scale.setScalar(1.0 + Math.sin(t * 2) * 0.1);
+    }
+  });
+  
   return (
-    <Sphere args={[size, 16, 16]} position={position}>
-      <meshStandardMaterial color={color} roughness={0.2} metalness={0.4} />
-    </Sphere>
+    <group position={position}>
+      {/* Main sphere */}
+      <Sphere ref={meshRef} args={[size, 16, 16]}>
+        <meshStandardMaterial 
+          color={color} 
+          roughness={0.1} 
+          metalness={0.8} 
+          emissive={color}
+          emissiveIntensity={0.5}
+        />
+      </Sphere>
+      
+      {/* Glow effect */}
+      <Sphere args={[size * 1.2, 16, 16]}>
+        <meshBasicMaterial 
+          color={color} 
+          transparent={true} 
+          opacity={0.2} 
+        />
+      </Sphere>
+    </group>
   );
 };
 
+// Enhanced bond with glow effect
 interface BondProps {
   start: [number, number, number];
   end: [number, number, number];
   color?: string;
+  thickness?: number;
+  glowIntensity?: number;
 }
 
-const Bond = ({ start, end, color = "#ffffff" }: BondProps) => {
+const Bond = ({ 
+  start, 
+  end, 
+  color = "#ffffff", 
+  thickness = 2,
+  glowIntensity = 0.7
+}: BondProps) => {
+  const lineRef = useRef<THREE.Line>(null);
   const points = [new THREE.Vector3(...start), new THREE.Vector3(...end)];
   
+  useFrame(({ clock }) => {
+    if (lineRef.current) {
+      // Subtle pulsing effect for the line
+      const t = clock.getElapsedTime();
+      const pulse = 1.0 + Math.sin(t * 3 + Math.random()) * 0.2;
+      lineRef.current.material.opacity = 0.7 + Math.sin(t * 2) * 0.3;
+    }
+  });
+  
   return (
-    <Line 
-      points={points}
-      color={color}
-      lineWidth={2}
-      opacity={0.7}
-    />
+    <group>
+      {/* Main line */}
+      <Line 
+        ref={lineRef}
+        points={points}
+        color={color}
+        lineWidth={thickness}
+        opacity={0.8}
+        transparent
+      />
+      
+      {/* Glow effect */}
+      <Line 
+        points={points}
+        color={color}
+        lineWidth={thickness * 2}
+        opacity={0.3 * glowIntensity}
+        transparent
+      />
+    </group>
   );
 };
 
-// Draggable atom with physics
+// Draggable molecule with physics
 interface DraggableMoleculeProps {
   position: [number, number, number];
   rotation?: [number, number, number];
   atomPositions: AtomProps[];
   bonds: BondProps[];
+  morphSpeed?: number;
 }
 
-const DraggableMolecule = ({ position, rotation = [0, 0, 0], atomPositions, bonds }: DraggableMoleculeProps) => {
+const DraggableMolecule = ({ 
+  position, 
+  rotation = [0, 0, 0], 
+  atomPositions, 
+  bonds,
+  morphSpeed = 0.001
+}: DraggableMoleculeProps) => {
   const groupRef = useRef<THREE.Group>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [velocity, setVelocity] = useState<[number, number, number]>([0, 0, 0]);
   const { size, viewport } = useThree();
   const aspect = size.width / viewport.width;
   
-  useFrame(() => {
-    if (!groupRef.current || isDragging) return;
+  useFrame(({ clock }) => {
+    if (!groupRef.current) return;
+    
+    const t = clock.getElapsedTime();
+    
+    // Apply subtle vibration animation all the time
+    groupRef.current.position.x += Math.sin(t * 10) * 0.0015;
+    groupRef.current.position.y += Math.cos(t * 8) * 0.0015;
     
     // Apply rotation animation when not dragging
-    groupRef.current.rotation.x += 0.002;
-    groupRef.current.rotation.y += 0.002;
+    if (!isDragging) {
+      groupRef.current.rotation.x += morphSpeed;
+      groupRef.current.rotation.y += morphSpeed * 1.3;
+    }
     
     // Apply velocity
     groupRef.current.position.x += velocity[0] * 0.05;
@@ -124,99 +201,126 @@ const DraggableMolecule = ({ position, rotation = [0, 0, 0], atomPositions, bond
       
       {/* Render atoms */}
       {atomPositions.map((atom, index) => (
-        <Atom key={`atom-${index}`} {...atom} />
+        <Atom key={`atom-${index}`} {...atom} pulse={true} />
       ))}
       
       {/* Render bonds */}
       {bonds.map((bond, index) => (
-        <Bond key={`bond-${index}`} {...bond} />
+        <Bond key={`bond-${index}`} {...bond} glowIntensity={0.8} />
       ))}
     </group>
   );
 };
 
-// Create common molecule structures
-const createWaterMolecule = (basePosition: [number, number, number]): { atoms: AtomProps[], bonds: BondProps[] } => {
+// Create graphene/nanotube-like hexagonal mesh structure
+const createHexagonalMesh = (basePosition: [number, number, number], size = 3, layers = 2): { atoms: AtomProps[], bonds: BondProps[] } => {
   const [x, y, z] = basePosition;
-  
-  return {
-    atoms: [
-      { position: [x, y, z], color: '#ff2d55', size: 0.4 }, // Oxygen (red)
-      { position: [x-0.5, y+0.3, z], color: '#2d55ff', size: 0.3 }, // Hydrogen (blue)
-      { position: [x+0.5, y+0.3, z], color: '#2d55ff', size: 0.3 }, // Hydrogen (blue)
-    ],
-    bonds: [
-      { start: [x, y, z], end: [x-0.5, y+0.3, z] },
-      { start: [x, y, z], end: [x+0.5, y+0.3, z] },
-    ]
-  };
-};
-
-const createCarbonDioxideMolecule = (basePosition: [number, number, number]): { atoms: AtomProps[], bonds: BondProps[] } => {
-  const [x, y, z] = basePosition;
-  
-  return {
-    atoms: [
-      { position: [x, y, z], color: '#3b3b3b', size: 0.4 }, // Carbon (gray)
-      { position: [x-0.8, y, z], color: '#ff2d55', size: 0.35 }, // Oxygen (red)
-      { position: [x+0.8, y, z], color: '#ff2d55', size: 0.35 }, // Oxygen (red)
-    ],
-    bonds: [
-      { start: [x, y, z], end: [x-0.8, y, z] },
-      { start: [x, y, z], end: [x+0.8, y, z] },
-    ]
-  };
-};
-
-const createSimpleMethane = (basePosition: [number, number, number]): { atoms: AtomProps[], bonds: BondProps[] } => {
-  const [x, y, z] = basePosition;
-  
-  return {
-    atoms: [
-      { position: [x, y, z], color: '#3b3b3b', size: 0.4 }, // Carbon (gray)
-      { position: [x+0.6, y+0.6, z-0.2], color: '#2d55ff', size: 0.3 }, // Hydrogen
-      { position: [x-0.6, y+0.6, z-0.2], color: '#2d55ff', size: 0.3 }, // Hydrogen
-      { position: [x+0.6, y-0.6, z-0.2], color: '#2d55ff', size: 0.3 }, // Hydrogen
-      { position: [x-0.6, y-0.6, z-0.2], color: '#2d55ff', size: 0.3 }, // Hydrogen
-    ],
-    bonds: [
-      { start: [x, y, z], end: [x+0.6, y+0.6, z-0.2] },
-      { start: [x, y, z], end: [x-0.6, y+0.6, z-0.2] },
-      { start: [x, y, z], end: [x+0.6, y-0.6, z-0.2] },
-      { start: [x, y, z], end: [x-0.6, y-0.6, z-0.2] },
-    ]
-  };
-};
-
-const createBenzeneMolecule = (basePosition: [number, number, number]): { atoms: AtomProps[], bonds: BondProps[] } => {
-  const [x, y, z] = basePosition;
-  const radius = 0.8;
   const atoms: AtomProps[] = [];
   const bonds: BondProps[] = [];
   
-  // Create hexagon of carbon atoms
-  for (let i = 0; i < 6; i++) {
-    const angle = (Math.PI / 3) * i;
-    const posX = x + Math.sin(angle) * radius;
-    const posY = y + Math.cos(angle) * radius;
+  // Parameters
+  const radius = size;
+  const hexSide = 0.6;
+  const atomSize = 0.17;
+  const layerSpacing = 0.5;
+  
+  // Create hexagonal lattice
+  for (let layer = 0; layer < layers; layer++) {
+    const layerZ = z + layer * layerSpacing;
+    const layerOffset = layer * 0.3; // Offset each layer slightly for 3D effect
     
-    atoms.push({ 
-      position: [posX, posY, z], 
-      color: '#3b3b3b', 
-      size: 0.35
-    });
-    
-    // Add bonds between atoms
-    const nextIndex = (i + 1) % 6;
-    const nextAngle = (Math.PI / 3) * nextIndex;
-    const nextPosX = x + Math.sin(nextAngle) * radius;
-    const nextPosY = y + Math.cos(nextAngle) * radius;
-    
-    bonds.push({
-      start: [posX, posY, z],
-      end: [nextPosX, nextPosY, z],
-      color: i % 2 === 0 ? '#ffffff' : '#77eeff' // Alternate bond colors for double bond effect
-    });
+    // Main hexagonal pattern
+    for (let ring = 0; ring < 4; ring++) {
+      const ringRadius = (ring + 1) * hexSide;
+      const nodesInRing = Math.max(6, Math.floor(6 * (ring + 1) * 0.9));
+      
+      for (let i = 0; i < nodesInRing; i++) {
+        const angle = (Math.PI * 2 / nodesInRing) * i;
+        const posX = x + Math.cos(angle) * ringRadius + layerOffset;
+        const posY = y + Math.sin(angle) * ringRadius + layerOffset;
+        
+        // Random variation for organic feel
+        const jitter = hexSide * 0.1;
+        const jitterX = (Math.random() - 0.5) * jitter;
+        const jitterY = (Math.random() - 0.5) * jitter;
+        
+        // Determine atom color - use metallic colors
+        const colorChoices = [
+          "#FFFFFF", // Pure white highlight
+          "#E8E8E8", // Silver white
+          "#C8C8C9", // Light gray
+          "#F1F1F1", // Off-white
+          "#D6BCFA", // Light purple
+        ];
+        const color = colorChoices[Math.floor(Math.random() * colorChoices.length)];
+        
+        // Add atom with slight random size variation
+        const atomSizeVar = atomSize * (0.9 + Math.random() * 0.3);
+        atoms.push({ 
+          position: [posX + jitterX, posY + jitterY, layerZ], 
+          color: color,
+          size: atomSizeVar
+        });
+        
+        // Connect to nearby atoms in the same layer
+        const currentAtomIndex = atoms.length - 1;
+        for (let j = 0; j < currentAtomIndex; j++) {
+          const otherAtom = atoms[j];
+          // Only connect if the atoms are in the same layer
+          if (Math.abs(otherAtom.position[2] - layerZ) < 0.01) {
+            const dx = otherAtom.position[0] - (posX + jitterX);
+            const dy = otherAtom.position[1] - (posY + jitterY);
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            // If close enough, create a bond
+            if (distance < hexSide * 1.2) {
+              // Determine bond color
+              const bondColorChoices = [
+                "#1EAEDB", // Bright blue
+                "#0FA0CE", // Vibrant blue
+                "#77EEFF", // Light blue
+                "#D3E4FD"  // Soft blue
+              ];
+              const bondColor = bondColorChoices[Math.floor(Math.random() * bondColorChoices.length)];
+              
+              bonds.push({
+                start: atoms[currentAtomIndex].position,
+                end: otherAtom.position,
+                color: bondColor,
+                thickness: 1.5 + Math.random() * 1.5
+              });
+            }
+          }
+        }
+        
+        // Connect to previous layer if it exists
+        if (layer > 0) {
+          // Find closest atoms in previous layer
+          const prevLayerStart = layer > 0 ? (layer - 1) * nodesInRing * 4 : 0;
+          for (let j = prevLayerStart; j < atoms.length - nodesInRing; j++) {
+            const otherAtom = atoms[j];
+            // Only connect if the atoms are in the adjacent layer
+            if (Math.abs(otherAtom.position[2] - (layerZ - layerSpacing)) < 0.01) {
+              const dx = otherAtom.position[0] - (posX + jitterX);
+              const dy = otherAtom.position[1] - (posY + jitterY);
+              const distance = Math.sqrt(dx * dx + dy * dy);
+              
+              // Connect some atoms between layers, but not all
+              if (distance < hexSide * 1.2 && Math.random() > 0.7) {
+                const interlayerBondColor = "#D6BCFA"; // Light purple for interlayer connections
+                
+                bonds.push({
+                  start: atoms[currentAtomIndex].position,
+                  end: otherAtom.position,
+                  color: interlayerBondColor,
+                  thickness: 1.2
+                });
+              }
+            }
+          }
+        }
+      }
+    }
   }
   
   return { atoms, bonds };
@@ -224,68 +328,51 @@ const createBenzeneMolecule = (basePosition: [number, number, number]): { atoms:
 
 // Main component with multiple molecules
 const Scene = () => {
-  const molecules = [
+  // Define nano mesh structures
+  const nanoMeshes = [
     {
-      type: 'water',
-      position: [-3, 2, 0] as [number, number, number],
-      rotation: [Math.random() * Math.PI, Math.random() * Math.PI, 0] as [number, number, number]
+      type: 'hexMesh',
+      position: [-2, 0, -1] as [number, number, number],
+      rotation: [Math.random() * Math.PI * 0.1, Math.random() * Math.PI * 0.1, 0] as [number, number, number],
+      size: 3,
+      layers: 2
     },
     {
-      type: 'co2',
-      position: [3, -1, 1] as [number, number, number],
-      rotation: [Math.random() * Math.PI, Math.random() * Math.PI, 0] as [number, number, number]
+      type: 'hexMesh',
+      position: [2, 1, 0] as [number, number, number],
+      rotation: [Math.random() * Math.PI * 0.1, Math.random() * Math.PI * 0.1, 0] as [number, number, number],
+      size: 2.5,
+      layers: 2
     },
     {
-      type: 'methane',
-      position: [-2, -2, -1] as [number, number, number],
-      rotation: [Math.random() * Math.PI, Math.random() * Math.PI, 0] as [number, number, number]
-    },
-    {
-      type: 'benzene',
-      position: [2, 1, -2] as [number, number, number],
-      rotation: [Math.random() * Math.PI, Math.random() * Math.PI, 0] as [number, number, number]
-    },
-    {
-      type: 'water',
-      position: [0, 3, 2] as [number, number, number],
-      rotation: [Math.random() * Math.PI, Math.random() * Math.PI, 0] as [number, number, number]
+      type: 'hexMesh',
+      position: [0.5, -2, 0.5] as [number, number, number],
+      rotation: [Math.random() * Math.PI * 0.1, Math.random() * Math.PI * 0.1, 0] as [number, number, number],
+      size: 2,
+      layers: 2
     }
   ];
   
   return (
     <>
-      {/* Lighting */}
+      {/* Enhanced lighting for better glow effects */}
       <ambientLight intensity={0.5} />
       <directionalLight position={[10, 10, 10]} intensity={1.5} color="#ffffff" />
       <directionalLight position={[-10, -10, -5]} intensity={0.5} color="#5cebdf" />
+      <pointLight position={[0, 0, 5]} intensity={0.5} color="#D6BCFA" />
       
-      {/* Add multiple molecules */}
-      {molecules.map((molecule, index) => {
-        let atomData;
-        switch(molecule.type) {
-          case 'water':
-            atomData = createWaterMolecule(molecule.position);
-            break;
-          case 'co2':
-            atomData = createCarbonDioxideMolecule(molecule.position);
-            break;
-          case 'methane':
-            atomData = createSimpleMethane(molecule.position);
-            break;
-          case 'benzene':
-            atomData = createBenzeneMolecule(molecule.position);
-            break;
-          default:
-            atomData = createWaterMolecule(molecule.position);
-        }
+      {/* Add nano mesh structures */}
+      {nanoMeshes.map((mesh, index) => {
+        const atomData = createHexagonalMesh(mesh.position, mesh.size, mesh.layers);
         
         return (
           <DraggableMolecule 
-            key={`molecule-${index}`}
-            position={molecule.position}
-            rotation={molecule.rotation}
+            key={`mesh-${index}`}
+            position={mesh.position}
+            rotation={mesh.rotation}
             atomPositions={atomData.atoms}
             bonds={atomData.bonds}
+            morphSpeed={0.0005 + Math.random() * 0.001}
           />
         );
       })}
