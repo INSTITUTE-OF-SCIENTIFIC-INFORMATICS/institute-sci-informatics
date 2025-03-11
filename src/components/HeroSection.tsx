@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Atom, Dna, Hash, Sigma, Variable, Braces, Code, Database } from 'lucide-react';
@@ -30,137 +29,64 @@ const HeroSection = () => {
       (element as HTMLElement).style.animationDuration = `${duration}s`;
     });
     
-    // Add more dynamic elements
-    const addDynamicElements = () => {
-      // Generate random chemical notations and code snippets
-      const chemicalNotations = [
-        "C₆H₁₂O₆", "NH₃", "H₂SO₄", "NaCl", "CH₃COOH", "C₁₀H₁₄N₂", 
-        "C₈H₁₀N₄O₂", "C₂H₅OH", "H₂O", "CO₂", "CHCl₃", "C₆H₆"
-      ];
+    // Add dynamic elements and particles (Netlify-style)
+    const createParticles = () => {
+      if (!animationRef.current) return;
       
-      const codeSnippets = [
-        "function optimize(x) { return x*x; }", 
-        "import numpy as np", 
-        "for i in range(100):", 
-        "df = pd.DataFrame(data)",
-        "model.fit(X_train, y_train)",
-        "const result = await api.predict(data)",
-        "sigmoid(x) = 1/(1+exp(-x))"
-      ];
-      
-      const smiles = [
-        "CC(=O)OC1=CC=CC=C1C(=O)O", // Aspirin
-        "CN1C=NC2=C1C(=O)N(C(=O)N2C)C", // Caffeine
-        "C(C1=CC=C(C=C1)C(=O)O)NC(=O)C", // Paracetamol
-        "CC12CCC(CC1)CC(C2)C(C)CN", // Pseudoephedrine
-        "COC1=CC2=C(C=C1)C(=O)C(=CO2)C3=CC=C(C=C3)O", // Daidzein
-        "O=C(OC1CC(CC2C1C(CC3(C2CCC4C3CCC5=CC(=O)CCC45C)C)O)OC(=O)C)C"
-      ];
-      
-      const genomicSequences = [
-        "ATGGTGCATCTGACTCCTGAGGAGAAG", 
-        "GATTACA", 
-        "GCTATAGCGCGCTCGC", 
-        "AGTCAGTCAGTC",
-        "GGAATTCTGCAGATATC"
-      ];
-      
-      const mathematicalEquations = [
-        "∇²ψ + (8π²m/h²)(E-V)ψ = 0",
-        "E = mc²",
-        "F = G(m₁m₂)/r²",
-        "∫e^x dx = e^x + C",
-        "d/dx[f(g(x))] = f'(g(x))·g'(x)",
-        "F = ma",
-        "PV = nRT",
-        "∑x = (n(n+1))/2"
-      ];
-      
-      // Create new animated elements periodically
-      if (animationRef.current) {
-        const container = animationRef.current;
-        
-        // Function to create a new dynamic element
-        const createDynamicElement = (content: string, type: string) => {
-          const elem = document.createElement('div');
-          elem.className = `dynamic-element text-xs sm:text-sm md:text-base absolute text-white/20 font-mono`;
-          elem.innerHTML = content;
-          
-          // Random position
-          const randomX = Math.random() * 90 + 5;
-          const randomY = Math.random() * 90 + 5;
-          elem.style.left = `${randomX}%`;
-          elem.style.top = `${randomY}%`;
-          
-          // Random animation speed
-          const animDuration = 2 + Math.random() * 3;
-          
-          // Different styling based on type
-          switch(type) {
-            case 'chemical':
-              elem.classList.add('text-blue-400/30');
-              break;
-            case 'code':
-              elem.classList.add('text-green-400/30');
-              break;
-            case 'smile':
-              elem.classList.add('text-purple-400/30');
-              break;
-            case 'genomic':
-              elem.classList.add('text-red-400/30');
-              break;
-            case 'math':
-              elem.classList.add('text-yellow-400/30');
-              break;
-          }
-          
-          // Animate the element
-          elem.style.animation = `floatAndFade ${animDuration}s forwards`;
-          
-          // Add to container
-          container.appendChild(elem);
-          
-          // Remove after animation completes
-          setTimeout(() => {
-            if (elem.parentNode === container) {
-              container.removeChild(elem);
-            }
-          }, animDuration * 1000);
-        };
-        
-        // Create various dynamic elements
-        setTimeout(() => {
-          const randIdx = Math.floor(Math.random() * chemicalNotations.length);
-          createDynamicElement(chemicalNotations[randIdx], 'chemical');
-        }, Math.random() * 200);
-        
-        setTimeout(() => {
-          const randIdx = Math.floor(Math.random() * codeSnippets.length);
-          createDynamicElement(codeSnippets[randIdx], 'code');
-        }, Math.random() * 200);
-        
-        setTimeout(() => {
-          const randIdx = Math.floor(Math.random() * smiles.length);
-          createDynamicElement(smiles[randIdx], 'smile');
-        }, Math.random() * 200);
-        
-        setTimeout(() => {
-          const randIdx = Math.floor(Math.random() * genomicSequences.length);
-          createDynamicElement(genomicSequences[randIdx], 'genomic');
-        }, Math.random() * 200);
-        
-        setTimeout(() => {
-          const randIdx = Math.floor(Math.random() * mathematicalEquations.length);
-          createDynamicElement(mathematicalEquations[randIdx], 'math');
-        }, Math.random() * 200);
+      // Create particle container if it doesn't exist
+      let particlesContainer = document.getElementById('netlify-particles');
+      if (!particlesContainer) {
+        particlesContainer = document.createElement('div');
+        particlesContainer.id = 'netlify-particles';
+        particlesContainer.className = 'absolute inset-0 z-0 overflow-hidden pointer-events-none';
+        animationRef.current.appendChild(particlesContainer);
       }
       
-      // Continue generating elements
-      requestAnimationFrame(addDynamicElements);
+      // Create a particle
+      const createParticle = () => {
+        const particle = document.createElement('div');
+        const size = Math.random() * 8 + 2; // 2-10px
+        particle.className = 'absolute rounded-full opacity-30 pointer-events-none';
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // Random position
+        const randomX = Math.random() * 100;
+        const randomY = Math.random() * 100;
+        particle.style.left = `${randomX}%`;
+        particle.style.top = `${randomY}%`;
+        
+        // Random color (using Netlify palette)
+        const colors = ['#2250f4', '#0e1e25', '#4d9abf', '#5cebdf', '#ff73fa'];
+        const randomColor = colors[Math.floor(Math.random() * colors.length)];
+        particle.style.backgroundColor = randomColor;
+        
+        // Set animation
+        const duration = 10 + Math.random() * 30; // 10-40s
+        particle.style.animation = `netlify-float ${duration}s ease-in-out infinite`;
+        
+        // Add to container
+        particlesContainer.appendChild(particle);
+        
+        // Remove after some time to prevent too many elements
+        setTimeout(() => {
+          if (particlesContainer.contains(particle)) {
+            particlesContainer.removeChild(particle);
+          }
+        }, duration * 1000);
+      };
+      
+      // Create particles at intervals
+      setInterval(createParticle, 300);
+      
+      // Initial particles
+      for (let i = 0; i < 20; i++) {
+        createParticle();
+      }
     };
     
-    // Start the dynamic element generation
-    addDynamicElements();
+    createParticles();
+    
   }, []);
 
   const scrollToTradChemDB = () => {
@@ -172,10 +98,19 @@ const HeroSection = () => {
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
-      {/* Background with overlay gradient */}
-      <div className="absolute inset-0 bg-gradient-to-r from-institute-blue/80 to-institute-purple/80 bg-cover bg-center bg-no-repeat">
+      {/* Netlify-inspired background with morphing gradient blob */}
+      <div className="absolute inset-0 bg-gradient-to-r from-institute-blue/10 to-institute-purple/10 overflow-hidden">
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="netlify-blob absolute w-[800px] h-[800px] rounded-full blur-[120px] bg-gradient-to-r from-[#2250f4]/20 to-[#5cebdf]/20 -top-[400px] -left-[400px] animate-blob"></div>
+          <div className="netlify-blob absolute w-[600px] h-[600px] rounded-full blur-[100px] bg-gradient-to-r from-[#ff73fa]/20 to-[#4d9abf]/20 top-[10%] right-[5%] animate-blob animation-delay-2"></div>
+          <div className="netlify-blob absolute w-[700px] h-[700px] rounded-full blur-[120px] bg-gradient-to-r from-[#5cebdf]/20 to-[#2250f4]/20 bottom-[5%] left-[20%] animate-blob animation-delay-4"></div>
+        </div>
+        
         {/* Mathematical and molecular background elements */}
         <div ref={animationRef} className="absolute inset-0 overflow-hidden">
+          {/* Netlify-style grid pattern */}
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMyMTIxMjEiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDM0aDR2MWgtNHYtMXptMC0zaDF2NWgtMXYtNXptNS0yaDF2MWgtMXYtMXptLTEgMmgtNXYtMWg1djF6bS0xLTFoMXYzaC0xdi0zem0tMi0xaDF2MWgtMXYtMXptMi0xaDF2MWgtMXYtMXptLTctOGg0djFoLTR2LTF6bTAgM2gxdi01aC0xdjV6bS0yLTJoLTV2LTFoNXYxem0tMS0xaDF2M2gtMXYtM3ptLTItMWgxdjFoLTF2LTF6bS0xIDFoLTF2LTFoMXYxem0tMyAxMGg0di0xaC00djF6bTAtM2gxdjVoLTF2LTV6bTUgMmgtNXYtMWg1djF6bS0xLTFoMXYzaC0xdi0zem0yLTFoMXYxaC0xdi0xem0yIDFoLTF2LTFoMXYxem0tMyAxMGg0di0xaC00djF6bTAgM2gxdi01aC0xdjV6bS01LTJoLTV2LTFoNXYxem0tMS0xaDF2M2gtMXYtM3ptLTItMWgxdjFoLTF2LTF6bS0xIDFoLTF2LTFoMXYxem0xMyAxNmgxdjFoLTF2LTF6bS0xLTJoLTV2LTFoNXYxem0tMS0xaDF2M2gtMXYtM3ptLTItMWgxdjFoLTF2LTF6bTItMWgxdjFoLTF2LTF6bS03LTloNHYxaC00di0xem0wIDNoMXYtNWgtMXY1em01IDJoLTV2LTFoNXYxem0tMSAxaC0xdi0zaDEiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-70"></div>
+          
           {/* Mathematical symbols */}
           <div className="animate-element absolute text-white text-4xl animate-float opacity-20 transition-all duration-[15s]">∫e<sup>x</sup> dx = e<sup>x</sup> + C</div>
           <div className="animate-element absolute text-white text-3xl animate-float animation-delay-2 opacity-20 transition-all duration-[18s]">E = mc<sup>2</sup></div>
@@ -236,8 +171,50 @@ const HeroSection = () => {
         </div>
       </div>
       
-      {/* Fix the style element by removing the jsx property */}
+      {/* CSS for Netlify-inspired effects */}
       <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes netlify-float {
+          0%, 100% {
+            transform: translate(0, 0) rotate(0deg) scale(1);
+          }
+          25% {
+            transform: translate(50px, -30px) rotate(5deg) scale(1.1);
+          }
+          50% {
+            transform: translate(20px, 40px) rotate(-5deg) scale(0.9);
+          }
+          75% {
+            transform: translate(-30px, 20px) rotate(3deg) scale(1.05);
+          }
+        }
+        
+        @keyframes blob {
+          0%, 100% {
+            transform: translate(0, 0) scale(1);
+            opacity: 0.2;
+          }
+          33% {
+            transform: translate(50px, -30px) scale(1.1);
+            opacity: 0.25;
+          }
+          66% {
+            transform: translate(-20px, 30px) scale(0.9);
+            opacity: 0.3;
+          }
+        }
+        
+        .animate-blob {
+          animation: blob 20s ease-in-out infinite;
+        }
+        
+        .animation-delay-2 {
+          animation-delay: 4s;
+        }
+        
+        .animation-delay-4 {
+          animation-delay: 8s;
+        }
+        
         @keyframes floatAndFade {
           0% {
             opacity: 0;
@@ -265,30 +242,34 @@ const HeroSection = () => {
       <div className="container relative z-10">
         <div className="max-w-3xl mx-auto text-center">
           <div className="flex justify-center mb-8 animate-fade-in">
-            <img 
-              src="/lovable-uploads/e7fac7ec-b4d4-40d2-a483-56b82c7a13a2.png"
-              alt="Institute Logo" 
-              className="w-48 h-48 object-contain"
-            />
+            <div className="relative">
+              <div className="absolute inset-0 blur-md bg-gradient-to-r from-[#2250f4]/40 to-[#5cebdf]/40 rounded-full animate-pulse-slow"></div>
+              <img 
+                src="/lovable-uploads/e7fac7ec-b4d4-40d2-a483-56b82c7a13a2.png"
+                alt="Institute Logo" 
+                className="w-48 h-48 object-contain relative z-10"
+              />
+            </div>
           </div>
           
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 animate-fade-in animate-delay-100">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in animate-delay-100 bg-gradient-to-r from-[#2250f4] to-[#5cebdf] bg-clip-text text-transparent">
             Institute of Scientific Informatics
           </h1>
           
-          <p className="text-xl text-white/90 mb-8 animate-fade-in animate-delay-200">
+          <p className="text-xl text-white/90 mb-8 animate-fade-in animate-delay-200 text-balance">
             Empowering the Next Generation of Scientists and Engineers in Sri Lanka
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in animate-delay-300">
             <Button 
-              className="text-lg py-6 px-10 bg-transparent backdrop-blur-md border-2 border-white/50 text-white hover:bg-white/10 shadow-lg shadow-blue-500/20 transition-all duration-300 group relative overflow-hidden"
+              className="text-lg py-6 px-10 bg-transparent backdrop-blur-md border-none text-white relative overflow-hidden group transition-all duration-300"
               onClick={scrollToTradChemDB}
             >
-              <span className="absolute inset-0 bg-gradient-to-r from-blue-600/40 to-purple-600/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-              <span className="relative flex items-center gap-2">
+              <span className="absolute inset-0 bg-gradient-to-r from-[#2250f4] to-[#5cebdf] opacity-90 group-hover:opacity-100 transition-opacity duration-300"></span>
+              <span className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4xIj48cGF0aCBkPSJNMzYgMzRoNHYxaC00di0xem0wLTNoMXY1aC0xdi01em01LTJoMXYxaC0xdi0xem0tMSAyaC01di0xaDV2MXptLTEtMWgxdjNoLTF2LTN6bS0yLTFoMXYxaC0xdi0xem0yLTFoMXYxaC0xdi0xem0tNy04aDR2MWgtNHYtMXptMCAzaDF2LTVoLTF2NXptLTItMmgtNXYtMWg1djF6bS0xLTFoMXYzaC0xdi0zem0tMi0xaDF2MWgtMXYtMXptLTEgMWgtMXYtMWgxdjF6bS0zIDEwaDR2LTFoLTR2MXptMC0zaDF2NWgtMXYtNXptNSAyaC01di0xaDV2MXptLTEtMWgxdjNoLTF2LTN6bTItMWgxdjFoLTF2LTF6bTIgMWgtMXYtMWgxdjF6bS0zIDEwaDR2LTFoLTR2MXptMCAzaDF2LTVoLTF2NXptLTUtMmgtNXYtMWg1djF6bS0xLTFoMXYzaC0xdi0zem0tMi0xaDF2MWgtMXYtMXptLTEgMWgtMXYtMWgxdjF6bTEzIDE2aDF2MWgtMXYtMXptLTEtMmgtNXYtMWg1djF6bS0xLTFoMXYzaC0xdi0zem0tMi0xaDF2MWgtMXYtMXptMi0xaDF2MWgtMXYtMXptLTctOWg0djFoLTR2LTF6bTAgM2gxdi01aC0xdjV6bTUgMmgtNXYtMWg1djF6bS0xIDFoLTF2LTNoMSIvPjwvZz48L2c+PC9zdmc+')] opacity-20"></span>
+              <span className="relative flex items-center gap-2 z-10">
                 <Database className="h-5 w-5 animate-pulse-slow" />
-                TradChemLLM
+                <span className="bg-gradient-to-r from-white to-white bg-clip-text">TradChemLLM</span>
               </span>
             </Button>
           </div>

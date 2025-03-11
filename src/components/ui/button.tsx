@@ -10,15 +10,15 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-gradient-to-r from-[#2e51d1] to-[#9f44d3] text-white hover:shadow-netlify-hover transform hover:-translate-y-0.5",
+        default: "relative overflow-hidden bg-gradient-to-r from-netlify-blue to-netlify-teal text-white hover:shadow-netlify-hover transform hover:-translate-y-0.5",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
-          "border-2 border-[#2e51d1] bg-transparent hover:bg-[#2e51d1]/5 text-[#2e51d1] dark:text-white",
+          "border-2 border-netlify-blue bg-transparent hover:bg-netlify-blue/5 text-netlify-blue dark:text-white",
         secondary:
-          "bg-gradient-to-r from-[#4C51BF] to-[#6B46C1] text-white hover:shadow-netlify-hover transform hover:-translate-y-0.5",
+          "relative overflow-hidden bg-netlify-navy/80 text-white hover:bg-netlify-navy/90 hover:shadow-netlify-hover transform hover:-translate-y-0.5",
         ghost: "hover:bg-accent hover:text-accent-foreground",
-        link: "text-[#2e51d1] underline-offset-4 hover:underline",
+        link: "text-netlify-blue underline-offset-4 hover:underline",
       },
       size: {
         default: "h-11 px-6 py-2",
