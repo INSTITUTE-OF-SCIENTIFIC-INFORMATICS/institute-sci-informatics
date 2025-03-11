@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame, useThree, ThreeElements } from '@react-three/fiber';
 import { OrbitControls, Sphere, Line } from '@react-three/drei';
@@ -46,15 +45,6 @@ interface DraggableMoleculeProps {
   bonds: BondProps[];
 }
 
-// Add proper Three.js event type
-type ThreeEvent = THREE.Event & {
-  stopPropagation: () => void;
-  target: THREE.Object3D;
-  object: THREE.Object3D;
-  pointerId: number;
-  nativeEvent: MouseEvent | TouchEvent;
-};
-
 const DraggableMolecule = ({ position, rotation = [0, 0, 0], atomPositions, bonds }: DraggableMoleculeProps) => {
   const groupRef = useRef<THREE.Group>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -90,26 +80,25 @@ const DraggableMolecule = ({ position, rotation = [0, 0, 0], atomPositions, bond
     }
   });
   
-  const handlePointerDown = (e: ThreeEvent) => {
-    e.stopPropagation();
+  const handlePointerDown = (event: ThreeElements['mesh']['onPointerDown']) => {
+    if (!event.target) return;
     setIsDragging(true);
-    e.object.setPointerCapture(e.pointerId);
+    (event.target as any).setPointerCapture(event.pointerId);
   };
   
-  const handlePointerUp = (e: ThreeEvent) => {
-    e.stopPropagation();
+  const handlePointerUp = (event: ThreeElements['mesh']['onPointerUp']) => {
+    if (!event.target) return;
     setIsDragging(false);
-    e.object.releasePointerCapture(e.pointerId);
+    (event.target as any).releasePointerCapture(event.pointerId);
   };
   
-  const handlePointerMove = (e: ThreeEvent) => {
+  const handlePointerMove = (event: ThreeElements['mesh']['onPointerMove']) => {
     if (isDragging && groupRef.current) {
-      const { movementX, movementY } = e.nativeEvent as MouseEvent;
+      const { movementX, movementY } = event.nativeEvent as PointerEvent;
       
       groupRef.current.position.x += movementX / aspect / 100;
       groupRef.current.position.y -= movementY / aspect / 100;
       
-      // Update velocity based on movement
       setVelocity([
         movementX / aspect / 50,
         -movementY / aspect / 50,
@@ -325,4 +314,3 @@ const MoleculeBackground = () => {
 };
 
 export default MoleculeBackground;
-
