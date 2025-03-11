@@ -1,93 +1,113 @@
+
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import { Atom, Dna, Hash, Sigma, Variable, Braces, Code, Database } from 'lucide-react';
-import { useEffect, useRef } from 'react';
+import { Database } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 
-const HeroSection = () => {
-  const animationRef = useRef<HTMLDivElement>(null);
+// Molecule component for the interactive effect
+const Molecule = ({ position, onFinish }: { position: { x: number, y: number }, onFinish: () => void }) => {
+  const [currentPos, setCurrentPos] = useState(position);
+  const [opacity, setOpacity] = useState(1);
+  const direction = useRef({
+    x: Math.random() > 0.5 ? 1 : -1,
+    y: Math.random() > 0.5 ? 1 : -1
+  });
   
   useEffect(() => {
-    if (!animationRef.current) return;
+    let animationId: number;
+    let startTime = Date.now();
+    const duration = 2000 + Math.random() * 3000; // 2-5 seconds lifespan
     
-    // Animation elements
-    const elements = animationRef.current.querySelectorAll('.animate-element');
-    
-    elements.forEach((element, index) => {
-      // Random initial position
-      const randomX = Math.random() * 80 + 10; // 10% to 90%
-      const randomY = Math.random() * 80 + 10; // 10% to 90%
+    const animate = () => {
+      const elapsed = Date.now() - startTime;
+      const progress = elapsed / duration;
       
-      // Set initial position
-      (element as HTMLElement).style.left = `${randomX}%`;
-      (element as HTMLElement).style.top = `${randomY}%`;
-      
-      // Set animation delay
-      (element as HTMLElement).style.animationDelay = `${index * 0.2}s`;
-      
-      // Set animation duration for more variety
-      const duration = 10 + Math.random() * 10;
-      (element as HTMLElement).style.animationDuration = `${duration}s`;
-    });
-    
-    // Add dynamic elements and particles (Netlify-style)
-    const createParticles = () => {
-      if (!animationRef.current) return;
-      
-      // Create particle container if it doesn't exist
-      let particlesContainer = document.getElementById('netlify-particles');
-      if (!particlesContainer) {
-        particlesContainer = document.createElement('div');
-        particlesContainer.id = 'netlify-particles';
-        particlesContainer.className = 'absolute inset-0 z-0 overflow-hidden pointer-events-none';
-        animationRef.current.appendChild(particlesContainer);
+      if (progress >= 1) {
+        onFinish();
+        return;
       }
       
-      // Create a particle
-      const createParticle = () => {
-        const particle = document.createElement('div');
-        const size = Math.random() * 8 + 2; // 2-10px
-        particle.className = 'absolute rounded-full opacity-30 pointer-events-none';
-        particle.style.width = `${size}px`;
-        particle.style.height = `${size}px`;
-        
-        // Random position
-        const randomX = Math.random() * 100;
-        const randomY = Math.random() * 100;
-        particle.style.left = `${randomX}%`;
-        particle.style.top = `${randomY}%`;
-        
-        // Random color (using Netlify palette)
-        const colors = ['#2250f4', '#0e1e25', '#4d9abf', '#5cebdf', '#ff73fa'];
-        const randomColor = colors[Math.floor(Math.random() * colors.length)];
-        particle.style.backgroundColor = randomColor;
-        
-        // Set animation
-        const duration = 10 + Math.random() * 30; // 10-40s
-        particle.style.animation = `netlify-float ${duration}s ease-in-out infinite`;
-        
-        // Add to container
-        particlesContainer.appendChild(particle);
-        
-        // Remove after some time to prevent too many elements
-        setTimeout(() => {
-          if (particlesContainer.contains(particle)) {
-            particlesContainer.removeChild(particle);
-          }
-        }, duration * 1000);
-      };
+      // Update position with random movement
+      setCurrentPos(prev => ({
+        x: prev.x + direction.current.x * (Math.random() * 2),
+        y: prev.y + direction.current.y * (Math.random() * 2)
+      }));
       
-      // Create particles at intervals
-      setInterval(createParticle, 300);
-      
-      // Initial particles
-      for (let i = 0; i < 20; i++) {
-        createParticle();
+      // Fade out near the end
+      if (progress > 0.7) {
+        setOpacity(1 - ((progress - 0.7) / 0.3));
       }
+      
+      animationId = requestAnimationFrame(animate);
     };
     
-    createParticles();
+    animate();
     
+    return () => {
+      cancelAnimationFrame(animationId);
+    };
+  }, [onFinish]);
+  
+  // Render a simple molecule (could be more complex SVG)
+  return (
+    <div 
+      className="absolute pointer-events-none"
+      style={{ 
+        left: `${currentPos.x}px`, 
+        top: `${currentPos.y}px`,
+        opacity,
+        transition: 'opacity 0.3s ease-out'
+      }}
+    >
+      <div className="relative">
+        <div className="h-4 w-4 rounded-full bg-netlify-teal absolute"></div>
+        <div className="h-3 w-3 rounded-full bg-netlify-blue absolute" style={{ left: '16px', top: '8px' }}></div>
+        <div className="h-5 w-5 rounded-full bg-netlify-pink absolute" style={{ left: '8px', top: '16px' }}></div>
+        <div className="absolute w-[20px] h-[1px] bg-white/40 rotate-45" style={{ left: '6px', top: '6px' }}></div>
+        <div className="absolute w-[16px] h-[1px] bg-white/40 rotate-[30deg]" style={{ left: '12px', top: '12px' }}></div>
+      </div>
+    </div>
+  );
+};
+
+const HeroSection = () => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [molecules, setMolecules] = useState<Array<{id: number, position: {x: number, y: number}}>>([]);
+  const nextId = useRef(1);
+  
+  useEffect(() => {
+    if (!sectionRef.current) return;
+    
+    // Function to add a molecule at cursor position
+    const handlePointerMove = (e: PointerEvent) => {
+      // Only add a molecule occasionally to avoid too many
+      if (Math.random() > 0.1) return;
+      
+      const rect = sectionRef.current?.getBoundingClientRect();
+      if (!rect) return;
+      
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      setMolecules(prev => [...prev, {
+        id: nextId.current++,
+        position: { x, y }
+      }]);
+    };
+    
+    // Add event listener
+    sectionRef.current.addEventListener('pointermove', handlePointerMove);
+    
+    // Clean up
+    return () => {
+      sectionRef.current?.removeEventListener('pointermove', handlePointerMove);
+    };
   }, []);
+  
+  // Function to remove a molecule
+  const removeMolecule = (id: number) => {
+    setMolecules(prev => prev.filter(molecule => molecule.id !== id));
+  };
 
   const scrollToTradChemDB = () => {
     const tradChemDBSection = document.getElementById('tradchem-db-section');
@@ -97,78 +117,29 @@ const HeroSection = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden">
-      {/* Netlify-inspired background with morphing gradient blob */}
-      <div className="absolute inset-0 bg-gradient-to-r from-institute-blue/10 to-institute-purple/10 overflow-hidden">
+    <section 
+      ref={sectionRef}
+      className="relative min-h-screen flex items-center overflow-hidden bg-[#0e1e25]"
+    >
+      {/* Dark Netlify-inspired background with morphing gradient blob */}
+      <div className="absolute inset-0 overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
-          <div className="netlify-blob absolute w-[800px] h-[800px] rounded-full blur-[120px] bg-gradient-to-r from-[#2250f4]/20 to-[#5cebdf]/20 -top-[400px] -left-[400px] animate-blob"></div>
-          <div className="netlify-blob absolute w-[600px] h-[600px] rounded-full blur-[100px] bg-gradient-to-r from-[#ff73fa]/20 to-[#4d9abf]/20 top-[10%] right-[5%] animate-blob animation-delay-2"></div>
-          <div className="netlify-blob absolute w-[700px] h-[700px] rounded-full blur-[120px] bg-gradient-to-r from-[#5cebdf]/20 to-[#2250f4]/20 bottom-[5%] left-[20%] animate-blob animation-delay-4"></div>
+          <div className="netlify-blob absolute w-[800px] h-[800px] rounded-full blur-[120px] bg-gradient-to-r from-[#2250f4]/10 to-[#5cebdf]/10 -top-[400px] -left-[400px] animate-blob"></div>
+          <div className="netlify-blob absolute w-[600px] h-[600px] rounded-full blur-[100px] bg-gradient-to-r from-[#ff73fa]/10 to-[#4d9abf]/10 top-[10%] right-[5%] animate-blob animation-delay-2"></div>
+          <div className="netlify-blob absolute w-[700px] h-[700px] rounded-full blur-[120px] bg-gradient-to-r from-[#5cebdf]/10 to-[#2250f4]/10 bottom-[5%] left-[20%] animate-blob animation-delay-4"></div>
         </div>
         
-        {/* Mathematical and molecular background elements */}
-        <div ref={animationRef} className="absolute inset-0 overflow-hidden">
-          {/* Netlify-style grid pattern */}
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMyMTIxMjEiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDM0aDR2MWgtNHYtMXptMC0zaDF2NWgtMXYtNXptNS0yaDF2MWgtMXYtMXptLTEgMmgtNXYtMWg1djF6bS0xLTFoMXYzaC0xdi0zem0tMi0xaDF2MWgtMXYtMXptMi0xaDF2MWgtMXYtMXptLTctOGg0djFoLTR2LTF6bTAgM2gxdi01aC0xdjV6bS0yLTJoLTV2LTFoNXYxem0tMS0xaDF2M2gtMXYtM3ptLTItMWgxdjFoLTF2LTF6bS0xIDFoLTF2LTFoMXYxem0tMyAxMGg0di0xaC00djF6bTAtM2gxdjVoLTF2LTV6bTUgMmgtNXYtMWg1djF6bS0xLTFoMXYzaC0xdi0zem0yLTFoMXYxaC0xdi0xem0yIDFoLTF2LTFoMXYxem0tMyAxMGg0di0xaC00djF6bTAgM2gxdi01aC0xdjV6bS01LTJoLTV2LTFoNXYxem0tMS0xaDF2M2gtMXYtM3ptLTItMWgxdjFoLTF2LTF6bS0xIDFoLTF2LTFoMXYxem0xMyAxNmgxdjFoLTF2LTF6bS0xLTJoLTV2LTFoNXYxem0tMS0xaDF2M2gtMXYtM3ptLTItMWgxdjFoLTF2LTF6bTItMWgxdjFoLTF2LTF6bS03LTloNHYxaC00di0xem0wIDNoMXYtNWgtMXY1em01IDJoLTV2LTFoNXYxem0tMSAxaC0xdi0zaDEiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-70"></div>
-          
-          {/* Mathematical symbols */}
-          <div className="animate-element absolute text-white text-4xl animate-float opacity-20 transition-all duration-[15s]">∫e<sup>x</sup> dx = e<sup>x</sup> + C</div>
-          <div className="animate-element absolute text-white text-3xl animate-float animation-delay-2 opacity-20 transition-all duration-[18s]">E = mc<sup>2</sup></div>
-          <div className="animate-element absolute text-white text-4xl animate-float animation-delay-4 opacity-20 transition-all duration-[20s]">∑<sub>n=0</sub><sup>∞</sup> x<sup>n</sup>/n!</div>
-          <div className="animate-element absolute text-white text-3xl animate-float animation-delay-6 opacity-20 transition-all duration-[25s]">F = G(m₁m₂)/r²</div>
-          <div className="animate-element absolute text-white text-3xl animate-float animation-delay-8 opacity-20 transition-all duration-[22s]">∇ × B = μ₀J + μ₀ε₀∂E/∂t</div>
-          <div className="animate-element absolute text-white text-3xl animate-float animation-delay-10 opacity-20 transition-all duration-[17s]">P(A|B) = P(B|A)P(A)/P(B)</div>
-          <div className="animate-element absolute text-white text-3xl animate-float animation-delay-12 opacity-20 transition-all duration-[19s]">∇ · E = ρ/ε₀</div>
-          
-          {/* Molecular illustrations */}
-          <div className="animate-element absolute animate-spin-slow opacity-20 transition-all duration-[30s]">
-            <Atom className="h-24 w-24 text-white" />
-          </div>
-          <div className="animate-element absolute animate-spin-slow animation-delay-5 opacity-20 transition-all duration-[35s]">
-            <Hash className="h-16 w-16 text-white" />
-          </div>
-          <div className="animate-element absolute animate-spin-slow animation-delay-10 opacity-20 transition-all duration-[25s]">
-            <Sigma className="h-20 w-20 text-white" />
-          </div>
-          <div className="animate-element absolute animate-spin-slow animation-delay-15 opacity-20 transition-all duration-[28s]">
-            <Variable className="h-20 w-20 text-white" />
-          </div>
-          <div className="animate-element absolute animate-pulse-slow animation-delay-10 opacity-20 transition-all duration-[28s]">
-            <Dna className="h-32 w-32 text-white" />
-          </div>
-          <div className="animate-element absolute animate-pulse-slow animation-delay-8 opacity-20 transition-all duration-[24s]">
-            <Code className="h-24 w-24 text-white" />
-          </div>
-          <div className="animate-element absolute animate-pulse-slow animation-delay-12 opacity-20 transition-all duration-[26s]">
-            <Braces className="h-20 w-20 text-white" />
-          </div>
-          <div className="animate-element absolute animate-pulse-slow animation-delay-14 opacity-20 transition-all duration-[30s]">
-            <Database className="h-28 w-28 text-white" />
-          </div>
-          
-          {/* Benzene ring representation */}
-          <div className="animate-element absolute text-white text-8xl animate-spin-slow animation-delay-8 opacity-20 transition-all duration-[40s]">⌬</div>
-          
-          {/* DNA double helix representation */}
-          <div className="animate-element absolute text-white text-6xl animate-float animation-delay-12 opacity-20 transition-all duration-[22s]">
-            <span className="inline-block animate-pulse-slow">≈≈≈≈≈</span>
-          </div>
-          
-          {/* Chemical structure representation */}
-          <div className="animate-element absolute text-white text-4xl animate-float animation-delay-14 opacity-20 transition-all duration-[24s]">
-            <span className="inline-block">H—C≡C—H</span>
-          </div>
-          
-          {/* SMILES notation */}
-          <div className="animate-element absolute text-white text-sm animate-float animation-delay-6 opacity-20 transition-all duration-[26s]">
-            <span className="inline-block font-mono">CC(=O)OC1=CC=CC=C1C(=O)O</span>
-          </div>
-          
-          {/* Genomic sequence */}
-          <div className="animate-element absolute text-white text-xs animate-float animation-delay-10 opacity-20 transition-all duration-[28s]">
-            <span className="inline-block font-mono">ATGGCCTAAGTCGATCGATCG</span>
-          </div>
-        </div>
+        {/* Netlify-style grid pattern */}
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDM0aDR2MWgtNHYtMXptMC0zaDF2NWgtMXYtNXptNS0yaDF2MWgtMXYtMXptLTEgMmgtNXYtMWg1djF6bS0xLTFoMXYzaC0xdi0zem0tMi0xaDF2MWgtMXYtMXptMi0xaDF2MWgtMXYtMXptLTctOGg0djFoLTR2LTF6bTAgM2gxdi01aC0xdjV6bS0yLTJoLTV2LTFoNXYxem0tMS0xaDF2M2gtMXYtM3ptLTItMWgxdjFoLTF2LTF6bS0xIDFoLTF2LTFoMXYxem0tMyAxMGg0di0xaC00djF6bTAtM2gxdjVoLTF2LTV6bTUgMmgtNXYtMWg1djF6bS0xLTFoMXYzaC0xdi0zem0yLTFoMXYxaC0xdi0xem0yIDFoLTF2LTFoMXYxem0tMyAxMGg0di0xaC00djF6bTAgM2gxdi01aC0xdjV6bS01LTJoLTV2LTFoNXYxem0tMS0xaDF2M2gtMXYtM3ptLTItMWgxdjFoLTF2LTF6bS0xIDFoLTF2LTFoMXYxem0xMyAxNmgxdjFoLTF2LTF6bS0xLTJoLTV2LTFoNXYxem0tMS0xaDF2M2gtMXYtM3ptLTItMWgxdjFoLTF2LTF6bTItMWgxdjFoLTF2LTF6bS03LTloNHYxaC00di0xem0wIDNoMXYtNWgtMXY1em01IDJoLTV2LTFoNXYxem0tMSAxaC0xdi0zaDEiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-30"></div>
+        
+        {/* Interactive molecules */}
+        {molecules.map(molecule => (
+          <Molecule 
+            key={molecule.id} 
+            position={molecule.position} 
+            onFinish={() => removeMolecule(molecule.id)} 
+          />
+        ))}
       </div>
       
       {/* CSS for Netlify-inspired effects */}
@@ -213,28 +184,6 @@ const HeroSection = () => {
         
         .animation-delay-4 {
           animation-delay: 8s;
-        }
-        
-        @keyframes floatAndFade {
-          0% {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          10% {
-            opacity: 0.4;
-          }
-          90% {
-            opacity: 0.4;
-          }
-          100% {
-            opacity: 0;
-            transform: translateY(-20px);
-          }
-        }
-        
-        .dynamic-element {
-          pointer-events: none;
-          will-change: transform, opacity;
         }
       `}} />
       

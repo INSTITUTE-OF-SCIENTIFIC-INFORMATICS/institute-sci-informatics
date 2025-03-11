@@ -14,9 +14,9 @@ const buttonVariants = cva(
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
         outline:
-          "border-2 border-netlify-blue bg-transparent hover:bg-netlify-blue/5 text-netlify-blue dark:text-white",
+          "border-2 border-netlify-blue bg-transparent hover:bg-netlify-blue/10 text-netlify-blue dark:text-white",
         secondary:
-          "relative overflow-hidden bg-netlify-navy/80 text-white hover:bg-netlify-navy/90 hover:shadow-netlify-hover transform hover:-translate-y-0.5",
+          "relative overflow-hidden bg-[#0e1e25]/80 text-white hover:bg-[#0e1e25]/90 hover:shadow-netlify-hover transform hover:-translate-y-0.5",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-netlify-blue underline-offset-4 hover:underline",
       },
