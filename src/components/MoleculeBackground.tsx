@@ -1,5 +1,6 @@
+
 import { useRef, useState, useEffect } from 'react';
-import { Canvas, useFrame, useThree, ThreeElements } from '@react-three/fiber';
+import { Canvas, useFrame, useThree, ThreeElements, ThreeEvent } from '@react-three/fiber';
 import { OrbitControls, Sphere, Line } from '@react-three/drei';
 import * as THREE from 'three';
 
@@ -80,21 +81,23 @@ const DraggableMolecule = ({ position, rotation = [0, 0, 0], atomPositions, bond
     }
   });
   
-  const handlePointerDown = (event: ThreeElements['mesh']['onPointerDown']) => {
-    if (!event.target) return;
+  const handlePointerDown = (event: ThreeEvent<PointerEvent>) => {
+    event.stopPropagation();
     setIsDragging(true);
-    (event.target as any).setPointerCapture(event.pointerId);
+    const eventObject = event.object as unknown as THREE.Object3D & { setPointerCapture: (id: number) => void };
+    eventObject.setPointerCapture(event.pointerId);
   };
   
-  const handlePointerUp = (event: ThreeElements['mesh']['onPointerUp']) => {
-    if (!event.target) return;
+  const handlePointerUp = (event: ThreeEvent<PointerEvent>) => {
+    event.stopPropagation();
     setIsDragging(false);
-    (event.target as any).releasePointerCapture(event.pointerId);
+    const eventObject = event.object as unknown as THREE.Object3D & { releasePointerCapture: (id: number) => void };
+    eventObject.releasePointerCapture(event.pointerId);
   };
   
-  const handlePointerMove = (event: ThreeElements['mesh']['onPointerMove']) => {
+  const handlePointerMove = (event: ThreeEvent<PointerEvent>) => {
     if (isDragging && groupRef.current) {
-      const { movementX, movementY } = event.nativeEvent as PointerEvent;
+      const { movementX, movementY } = event.nativeEvent;
       
       groupRef.current.position.x += movementX / aspect / 100;
       groupRef.current.position.y -= movementY / aspect / 100;
