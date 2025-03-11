@@ -2,112 +2,11 @@
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Database } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
-
-// Molecule component for the interactive effect
-const Molecule = ({ position, onFinish }: { position: { x: number, y: number }, onFinish: () => void }) => {
-  const [currentPos, setCurrentPos] = useState(position);
-  const [opacity, setOpacity] = useState(1);
-  const direction = useRef({
-    x: Math.random() > 0.5 ? 1 : -1,
-    y: Math.random() > 0.5 ? 1 : -1
-  });
-  
-  useEffect(() => {
-    let animationId: number;
-    let startTime = Date.now();
-    const duration = 2000 + Math.random() * 3000; // 2-5 seconds lifespan
-    
-    const animate = () => {
-      const elapsed = Date.now() - startTime;
-      const progress = elapsed / duration;
-      
-      if (progress >= 1) {
-        onFinish();
-        return;
-      }
-      
-      // Update position with random movement
-      setCurrentPos(prev => ({
-        x: prev.x + direction.current.x * (Math.random() * 2),
-        y: prev.y + direction.current.y * (Math.random() * 2)
-      }));
-      
-      // Fade out near the end
-      if (progress > 0.7) {
-        setOpacity(1 - ((progress - 0.7) / 0.3));
-      }
-      
-      animationId = requestAnimationFrame(animate);
-    };
-    
-    animate();
-    
-    return () => {
-      cancelAnimationFrame(animationId);
-    };
-  }, [onFinish]);
-  
-  // Render a simple molecule (could be more complex SVG)
-  return (
-    <div 
-      className="absolute pointer-events-none"
-      style={{ 
-        left: `${currentPos.x}px`, 
-        top: `${currentPos.y}px`,
-        opacity,
-        transition: 'opacity 0.3s ease-out'
-      }}
-    >
-      <div className="relative">
-        <div className="h-4 w-4 rounded-full bg-netlify-teal absolute"></div>
-        <div className="h-3 w-3 rounded-full bg-netlify-blue absolute" style={{ left: '16px', top: '8px' }}></div>
-        <div className="h-5 w-5 rounded-full bg-netlify-pink absolute" style={{ left: '8px', top: '16px' }}></div>
-        <div className="absolute w-[20px] h-[1px] bg-white/40 rotate-45" style={{ left: '6px', top: '6px' }}></div>
-        <div className="absolute w-[16px] h-[1px] bg-white/40 rotate-[30deg]" style={{ left: '12px', top: '12px' }}></div>
-      </div>
-    </div>
-  );
-};
+import { useEffect, useRef } from 'react';
+import MoleculeBackground from './MoleculeBackground';
 
 const HeroSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
-  const [molecules, setMolecules] = useState<Array<{id: number, position: {x: number, y: number}}>>([]);
-  const nextId = useRef(1);
-  
-  useEffect(() => {
-    if (!sectionRef.current) return;
-    
-    // Function to add a molecule at cursor position
-    const handlePointerMove = (e: PointerEvent) => {
-      // Only add a molecule occasionally to avoid too many
-      if (Math.random() > 0.1) return;
-      
-      const rect = sectionRef.current?.getBoundingClientRect();
-      if (!rect) return;
-      
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      
-      setMolecules(prev => [...prev, {
-        id: nextId.current++,
-        position: { x, y }
-      }]);
-    };
-    
-    // Add event listener
-    sectionRef.current.addEventListener('pointermove', handlePointerMove);
-    
-    // Clean up
-    return () => {
-      sectionRef.current?.removeEventListener('pointermove', handlePointerMove);
-    };
-  }, []);
-  
-  // Function to remove a molecule
-  const removeMolecule = (id: number) => {
-    setMolecules(prev => prev.filter(molecule => molecule.id !== id));
-  };
 
   const scrollToTradChemDB = () => {
     const tradChemDBSection = document.getElementById('tradchem-db-section');
@@ -132,14 +31,8 @@ const HeroSection = () => {
         {/* Netlify-style grid pattern */}
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDM0aDR2MWgtNHYtMXptMC0zaDF2NWgtMXYtNXptNS0yaDF2MWgtMXYtMXptLTEgMmgtNXYtMWg1djF6bS0xLTFoMXYzaC0xdi0zem0tMi0xaDF2MWgtMXYtMXptMi0xaDF2MWgtMXYtMXptLTctOGg0djFoLTR2LTF6bTAgM2gxdi01aC0xdjV6bS0yLTJoLTV2LTFoNXYxem0tMS0xaDF2M2gtMXYtM3ptLTItMWgxdjFoLTF2LTF6bS0xIDFoLTF2LTFoMXYxem0tMyAxMGg0di0xaC00djF6bTAtM2gxdjVoLTF2LTV6bTUgMmgtNXYtMWg1djF6bS0xLTFoMXYzaC0xdi0zem0yLTFoMXYxaC0xdi0xem0yIDFoLTF2LTFoMXYxem0tMyAxMGg0di0xaC00djF6bTAgM2gxdi01aC0xdjV6bS01LTJoLTV2LTFoNXYxem0tMS0xaDF2M2gtMXYtM3ptLTItMWgxdjFoLTF2LTF6bS0xIDFoLTF2LTFoMXYxem0xMyAxNmgxdjFoLTF2LTF6bS0xLTJoLTV2LTFoNXYxem0tMS0xaDF2M2gtMXYtM3ptLTItMWgxdjFoLTF2LTF6bTItMWgxdjFoLTF2LTF6bS03LTloNHYxaC00di0xem0wIDNoMXYtNWgtMXY1em01IDJoLTV2LTFoNXYxem0tMSAxaC0xdi0zaDEiLz48L2c+PC9nPjwvc3ZnPg==')] opacity-30"></div>
         
-        {/* Interactive molecules */}
-        {molecules.map(molecule => (
-          <Molecule 
-            key={molecule.id} 
-            position={molecule.position} 
-            onFinish={() => removeMolecule(molecule.id)} 
-          />
-        ))}
+        {/* 3D Interactive molecules */}
+        <MoleculeBackground />
       </div>
       
       {/* CSS for Netlify-inspired effects */}
