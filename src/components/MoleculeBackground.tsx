@@ -46,6 +46,15 @@ interface DraggableMoleculeProps {
   bonds: BondProps[];
 }
 
+// Add proper Three.js event type
+type ThreeEvent = THREE.Event & {
+  stopPropagation: () => void;
+  target: THREE.Object3D;
+  object: THREE.Object3D;
+  pointerId: number;
+  nativeEvent: MouseEvent | TouchEvent;
+};
+
 const DraggableMolecule = ({ position, rotation = [0, 0, 0], atomPositions, bonds }: DraggableMoleculeProps) => {
   const groupRef = useRef<THREE.Group>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -81,19 +90,19 @@ const DraggableMolecule = ({ position, rotation = [0, 0, 0], atomPositions, bond
     }
   });
   
-  const handlePointerDown = (e: THREE.Event) => {
+  const handlePointerDown = (e: ThreeEvent) => {
     e.stopPropagation();
     setIsDragging(true);
     e.object.setPointerCapture(e.pointerId);
   };
   
-  const handlePointerUp = (e: THREE.Event) => {
+  const handlePointerUp = (e: ThreeEvent) => {
     e.stopPropagation();
     setIsDragging(false);
     e.object.releasePointerCapture(e.pointerId);
   };
   
-  const handlePointerMove = (e: THREE.Event) => {
+  const handlePointerMove = (e: ThreeEvent) => {
     if (isDragging && groupRef.current) {
       const { movementX, movementY } = e.nativeEvent as MouseEvent;
       
@@ -316,3 +325,4 @@ const MoleculeBackground = () => {
 };
 
 export default MoleculeBackground;
+
