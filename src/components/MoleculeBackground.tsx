@@ -68,11 +68,22 @@ const Bond = ({
   const points = [new THREE.Vector3(...start), new THREE.Vector3(...end)];
   
   useFrame(({ clock }) => {
-    if (lineRef.current) {
+    if (lineRef.current && lineRef.current.material) {
       // Subtle pulsing effect for the line
       const t = clock.getElapsedTime();
       const pulse = 1.0 + Math.sin(t * 3 + Math.random()) * 0.2;
-      lineRef.current.material.opacity = 0.7 + Math.sin(t * 2) * 0.3;
+      
+      // Handle both single material and array of materials
+      const material = lineRef.current.material;
+      if (Array.isArray(material)) {
+        material.forEach(mat => {
+          if (mat.opacity !== undefined) {
+            mat.opacity = 0.7 + Math.sin(t * 2) * 0.3;
+          }
+        });
+      } else if (material.opacity !== undefined) {
+        material.opacity = 0.7 + Math.sin(t * 2) * 0.3;
+      }
     }
   });
   
@@ -80,7 +91,7 @@ const Bond = ({
     <group>
       {/* Main line */}
       <Line 
-        ref={lineRef}
+        ref={lineRef as any} // Use type assertion to bypass the type check
         points={points}
         color={color}
         lineWidth={thickness}
