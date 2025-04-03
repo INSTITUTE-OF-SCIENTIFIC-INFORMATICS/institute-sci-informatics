@@ -60,14 +60,14 @@ const StarField = ({ count = 5000, depth = 50 }) => {
       <bufferGeometry>
         <bufferAttribute
           attach="attributes-position"
-          count={positions.length / 3}
-          array={positions}
+          count={count}
+          array={positions.positions}
           itemSize={3}
         />
         <bufferAttribute
           attach="attributes-color"
-          count={positions.length / 3}
-          array={positions}
+          count={count}
+          array={positions.colors}
           itemSize={3}
         />
         <bufferAttribute
