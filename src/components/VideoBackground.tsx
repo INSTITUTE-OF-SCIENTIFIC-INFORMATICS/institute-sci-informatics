@@ -1,5 +1,5 @@
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface VideoBackgroundProps {
   videoUrl: string;
@@ -7,11 +7,23 @@ interface VideoBackgroundProps {
 }
 
 const VideoBackground = ({ videoUrl, fallbackImageUrl }: VideoBackgroundProps) => {
+  const [isVimeo, setIsVimeo] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
-    // Initialize video when component mounts
-    if (videoRef.current) {
+    // Check if the URL is a Vimeo URL
+    if (videoUrl.includes('vimeo.com')) {
+      setIsVimeo(true);
+    } else {
+      setIsVimeo(false);
+    }
+  }, [videoUrl]);
+
+  useEffect(() => {
+    // Initialize video when component mounts (only for direct video files, not Vimeo)
+    if (!isVimeo && videoRef.current) {
       // Set video properties
       videoRef.current.muted = true;
       
@@ -26,7 +38,11 @@ const VideoBackground = ({ videoUrl, fallbackImageUrl }: VideoBackgroundProps) =
         });
       }
     }
-  }, [videoUrl]);
+  }, [videoUrl, isVimeo]);
+
+  const handleVideoLoad = () => {
+    setVideoLoaded(true);
+  };
 
   return (
     <div className="absolute inset-0 z-0 overflow-hidden">
@@ -36,19 +52,34 @@ const VideoBackground = ({ videoUrl, fallbackImageUrl }: VideoBackgroundProps) =
         style={fallbackImageUrl ? { backgroundImage: `url(${fallbackImageUrl})` } : undefined}
       ></div>
       
-      {/* Video element */}
-      <video
-        ref={videoRef}
-        className="absolute w-full h-full object-cover"
-        playsInline
-        muted
-        loop
-        autoPlay
-        poster={fallbackImageUrl}
-      >
-        <source src={videoUrl} type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
+      {/* Conditional rendering based on video type */}
+      {isVimeo ? (
+        <iframe
+          ref={iframeRef}
+          src={`${videoUrl}?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1`}
+          className="absolute w-full h-full object-cover"
+          allow="autoplay; fullscreen"
+          title="Vimeo Background"
+          onLoad={handleVideoLoad}
+          style={{ opacity: videoLoaded ? 1 : 0, transition: 'opacity 1s ease' }}
+          loading="eager"
+        ></iframe>
+      ) : (
+        <video
+          ref={videoRef}
+          className="absolute w-full h-full object-cover"
+          playsInline
+          muted
+          loop
+          autoPlay
+          poster={fallbackImageUrl}
+          onLoadedData={handleVideoLoad}
+          style={{ opacity: videoLoaded ? 1 : 0, transition: 'opacity 1s ease' }}
+        >
+          <source src={videoUrl} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      )}
       
       {/* Overlay to control video darkness/brightness */}
       <div className="absolute inset-0 bg-black/40"></div>
