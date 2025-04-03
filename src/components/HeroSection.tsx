@@ -1,13 +1,12 @@
 
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 import { Database } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import VideoBackground from './VideoBackground';
 
 const HeroSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
-  const [videoUrl, setVideoUrl] = useState('/your-video-file.mp4'); // Replace with your actual video path
+  const videoUrl = '/your-video-file.mp4'; // Replace with your actual video path
 
   const scrollToTradChemDB = () => {
     const tradChemDBSection = document.getElementById('tradchem-db-section');
@@ -65,7 +64,7 @@ const HeroSection = () => {
         </div>
       </div>
       
-      {/* CSS for Netlify-inspired effects */}
+      {/* CSS for effects */}
       <style dangerouslySetInnerHTML={{ __html: `
         @keyframes netlify-float {
           0%, 100% {
