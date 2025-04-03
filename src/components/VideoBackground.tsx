@@ -26,7 +26,7 @@ const VideoBackground = ({ videoUrl, fallbackImageUrl }: VideoBackgroundProps) =
         });
       }
     }
-  }, []);
+  }, [videoUrl]);
 
   return (
     <div className="absolute inset-0 z-0 overflow-hidden">

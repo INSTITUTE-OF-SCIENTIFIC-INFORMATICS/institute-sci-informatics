@@ -1,4 +1,3 @@
-
 import { Button } from '@/components/ui/button';
 import { Database } from 'lucide-react';
 import { useRef } from 'react';
@@ -6,8 +5,12 @@ import VideoBackground from './VideoBackground';
 
 const HeroSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
-  // Use a placeholder or sample video URL
-  const videoUrl = '/your-video-file.mp4'; // Replace with your actual video path
+  
+  // Use a direct video URL - Note: Google Drive links don't work directly, you need to host the video somewhere
+  // For this example, we'll use a placeholder video URL that you should replace with your actual hosted video
+  const videoUrl = "https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"; // A sample video as placeholder
+  
+  // Keep the fallback image in case video doesn't load
   const fallbackImageUrl = "/lovable-uploads/e7fac7ec-b4d4-40d2-a483-56b82c7a13a2.png";
 
   const scrollToTradChemDB = () => {
