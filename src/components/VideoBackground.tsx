@@ -12,15 +12,31 @@ const VideoBackground = ({ videoUrl, fallbackImageUrl }: VideoBackgroundProps) =
   useEffect(() => {
     // Initialize video when component mounts
     if (videoRef.current) {
+      // Set video properties
       videoRef.current.muted = true;
-      videoRef.current.play().catch(error => {
-        console.error("Video autoplay failed:", error);
-      });
+      
+      // Attempt to play the video
+      const playPromise = videoRef.current.play();
+      
+      // Handle potential play() Promise rejection (happens in some browsers)
+      if (playPromise !== undefined) {
+        playPromise.catch(error => {
+          console.log("Video autoplay prevented:", error);
+          // We don't need to do anything special on error - the fallback image will be shown
+        });
+      }
     }
   }, []);
 
   return (
     <div className="absolute inset-0 z-0 overflow-hidden">
+      {/* Use a simple div with background as fallback if video fails */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center z-0" 
+        style={fallbackImageUrl ? { backgroundImage: `url(${fallbackImageUrl})` } : undefined}
+      ></div>
+      
+      {/* Video element */}
       <video
         ref={videoRef}
         className="absolute w-full h-full object-cover"

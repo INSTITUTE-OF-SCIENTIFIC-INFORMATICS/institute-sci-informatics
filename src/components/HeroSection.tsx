@@ -6,7 +6,9 @@ import VideoBackground from './VideoBackground';
 
 const HeroSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
+  // Use a placeholder or sample video URL
   const videoUrl = '/your-video-file.mp4'; // Replace with your actual video path
+  const fallbackImageUrl = "/lovable-uploads/e7fac7ec-b4d4-40d2-a483-56b82c7a13a2.png";
 
   const scrollToTradChemDB = () => {
     const tradChemDBSection = document.getElementById('tradchem-db-section');
@@ -20,10 +22,10 @@ const HeroSection = () => {
       ref={sectionRef}
       className="relative min-h-screen flex items-center overflow-hidden bg-[#050315]"
     >
-      {/* Video background */}
+      {/* Video background with fallback image */}
       <VideoBackground 
         videoUrl={videoUrl} 
-        fallbackImageUrl="/lovable-uploads/e7fac7ec-b4d4-40d2-a483-56b82c7a13a2.png"
+        fallbackImageUrl={fallbackImageUrl}
       />
       
       {/* Content */}
