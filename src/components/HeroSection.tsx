@@ -9,7 +9,7 @@ const HeroSection = () => {
   // Use the Vimeo video URL provided by the user
   const videoUrl = "https://player.vimeo.com/video/1072054914";
   
-  // Keep the fallback image in case video doesn't load
+  // Keep a fallback image just in case, but it will only show before video loads
   const fallbackImageUrl = "/lovable-uploads/e7fac7ec-b4d4-40d2-a483-56b82c7a13a2.png";
 
   const scrollToTradChemDB = () => {
@@ -24,7 +24,7 @@ const HeroSection = () => {
       ref={sectionRef}
       className="relative min-h-screen flex items-center overflow-hidden bg-[#050315]"
     >
-      {/* Video background with fallback image */}
+      {/* Video background */}
       <VideoBackground 
         videoUrl={videoUrl} 
         fallbackImageUrl={fallbackImageUrl}
@@ -33,17 +33,6 @@ const HeroSection = () => {
       {/* Content */}
       <div className="container relative z-10">
         <div className="max-w-3xl mx-auto text-center">
-          <div className="flex justify-center mb-8 animate-fade-in">
-            <div className="relative">
-              <div className="absolute inset-0 blur-md bg-gradient-to-r from-[#2250f4]/40 to-[#5cebdf]/40 rounded-full animate-pulse-slow"></div>
-              <img 
-                src="/lovable-uploads/e7fac7ec-b4d4-40d2-a483-56b82c7a13a2.png"
-                alt="Institute Logo" 
-                className="w-48 h-48 object-contain relative z-10"
-              />
-            </div>
-          </div>
-          
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 animate-fade-in animate-delay-100 bg-gradient-to-r from-[#2250f4] to-[#5cebdf] bg-clip-text text-transparent">
             Institute of Scientific Informatics
           </h1>
@@ -70,21 +59,6 @@ const HeroSection = () => {
       
       {/* CSS for effects */}
       <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes netlify-float {
-          0%, 100% {
-            transform: translate(0, 0) rotate(0deg) scale(1);
-          }
-          25% {
-            transform: translate(50px, -30px) rotate(5deg) scale(1.1);
-          }
-          50% {
-            transform: translate(20px, 40px) rotate(-5deg) scale(0.9);
-          }
-          75% {
-            transform: translate(-30px, 20px) rotate(3deg) scale(1.05);
-          }
-        }
-        
         @keyframes blob {
           0%, 100% {
             transform: translate(0, 0) scale(1);
@@ -98,18 +72,6 @@ const HeroSection = () => {
             transform: translate(-20px, 30px) scale(0.9);
             opacity: 0.3;
           }
-        }
-        
-        .animate-blob {
-          animation: blob 20s ease-in-out infinite;
-        }
-        
-        .animation-delay-2 {
-          animation-delay: 4s;
-        }
-        
-        .animation-delay-4 {
-          animation-delay: 8s;
         }
       `}} />
     </section>
