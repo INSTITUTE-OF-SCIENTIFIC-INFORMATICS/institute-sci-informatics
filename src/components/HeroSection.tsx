@@ -22,7 +22,7 @@ const HeroSection = () => {
   return (
     <section 
       ref={sectionRef}
-      className="relative min-h-screen flex items-center overflow-hidden bg-[#050315]"
+      className="relative min-h-screen w-full flex items-center overflow-hidden bg-[#050315]"
     >
       {/* Video background */}
       <VideoBackground 
@@ -56,24 +56,6 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-      
-      {/* CSS for effects */}
-      <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes blob {
-          0%, 100% {
-            transform: translate(0, 0) scale(1);
-            opacity: 0.2;
-          }
-          33% {
-            transform: translate(50px, -30px) scale(1.1);
-            opacity: 0.25;
-          }
-          66% {
-            transform: translate(-20px, 30px) scale(0.9);
-            opacity: 0.3;
-          }
-        }
-      `}} />
     </section>
   );
 };
