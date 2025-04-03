@@ -4,7 +4,6 @@ import { useFrame } from '@react-three/fiber';
 import { Canvas, useThree } from '@react-three/fiber';
 import { PointMaterial, Points } from '@react-three/drei';
 import * as THREE from 'three';
-import { random } from '@/lib/utils';
 
 // Generate a field of stars
 const StarField = ({ count = 5000, depth = 50 }) => {
@@ -73,7 +72,7 @@ const StarField = ({ count = 5000, depth = 50 }) => {
         />
         <bufferAttribute
           attach="attributes-size"
-          count={positions.length / 3}
+          count={count}
           array={new Float32Array(count).fill(1)}
           itemSize={1}
         />
@@ -94,6 +93,7 @@ const StarField = ({ count = 5000, depth = 50 }) => {
 const Nebula = () => {
   const meshRef = useRef<THREE.Mesh>(null);
   const { viewport } = useThree();
+  const [texture] = useState(() => createNebulaTexture());
   
   useFrame(({ clock }) => {
     if (!meshRef.current) return;
@@ -114,50 +114,45 @@ const Nebula = () => {
         blending={THREE.AdditiveBlending}
         wireframe={false}
         color={new THREE.Color("#1a0038")}
-      >
-        <cloudTexture attach="map" />
-      </meshBasicMaterial>
+        map={texture}
+      />
     </mesh>
   );
 };
 
-// Custom procedural cloud texture
-const CloudTexture = (props: any) => {
+// Create procedural cloud texture function
+const createNebulaTexture = () => {
   const size = 128;
-  const [texture] = useState(() => {
-    const canvas = document.createElement('canvas');
-    canvas.width = size;
-    canvas.height = size;
-    const context = canvas.getContext('2d')!;
-    
-    // Draw nebula-like gradients
-    const gradient1 = context.createRadialGradient(
-      size * 0.3, size * 0.3, 0,
-      size * 0.3, size * 0.3, size * 0.7
-    );
-    gradient1.addColorStop(0, 'rgba(103, 0, 180, 0.5)');
-    gradient1.addColorStop(0.4, 'rgba(42, 0, 99, 0.2)');
-    gradient1.addColorStop(1, 'rgba(0, 0, 0, 0)');
-    
-    const gradient2 = context.createRadialGradient(
-      size * 0.7, size * 0.7, 0,
-      size * 0.7, size * 0.7, size * 0.5
-    );
-    gradient2.addColorStop(0, 'rgba(0, 42, 99, 0.5)');
-    gradient2.addColorStop(0.4, 'rgba(0, 12, 64, 0.2)');
-    gradient2.addColorStop(1, 'rgba(0, 0, 0, 0)');
-    
-    context.fillStyle = gradient1;
-    context.fillRect(0, 0, size, size);
-    
-    context.fillStyle = gradient2;
-    context.fillRect(0, 0, size, size);
-    
-    const texture = new THREE.CanvasTexture(canvas);
-    return texture;
-  });
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const context = canvas.getContext('2d')!;
   
-  return <primitive object={texture} {...props} />;
+  // Draw nebula-like gradients
+  const gradient1 = context.createRadialGradient(
+    size * 0.3, size * 0.3, 0,
+    size * 0.3, size * 0.3, size * 0.7
+  );
+  gradient1.addColorStop(0, 'rgba(103, 0, 180, 0.5)');
+  gradient1.addColorStop(0.4, 'rgba(42, 0, 99, 0.2)');
+  gradient1.addColorStop(1, 'rgba(0, 0, 0, 0)');
+  
+  const gradient2 = context.createRadialGradient(
+    size * 0.7, size * 0.7, 0,
+    size * 0.7, size * 0.7, size * 0.5
+  );
+  gradient2.addColorStop(0, 'rgba(0, 42, 99, 0.5)');
+  gradient2.addColorStop(0.4, 'rgba(0, 12, 64, 0.2)');
+  gradient2.addColorStop(1, 'rgba(0, 0, 0, 0)');
+  
+  context.fillStyle = gradient1;
+  context.fillRect(0, 0, size, size);
+  
+  context.fillStyle = gradient2;
+  context.fillRect(0, 0, size, size);
+  
+  const texture = new THREE.CanvasTexture(canvas);
+  return texture;
 };
 
 // Camera effects
