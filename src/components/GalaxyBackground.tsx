@@ -1,4 +1,3 @@
-
 import { useRef, useState, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Canvas, useThree } from '@react-three/fiber';
@@ -189,16 +188,68 @@ const GalaxyScene = () => {
 // Main export component
 const GalaxyBackground = () => {
   return (
-    <div className="absolute inset-0 z-0 pointer-events-auto">
-      <Canvas
-        camera={{ position: [0, 0, 10], fov: 50 }}
-        dpr={[1, 2]}
-        style={{ background: 'transparent' }}
-      >
-        <GalaxyScene />
-      </Canvas>
+    <div className="absolute inset-0 overflow-hidden">
+      {/* Dark gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-gray-900 via-purple-900/20 to-blue-900/20"></div>
+      
+      {/* Animated stars */}
+      <div className="absolute inset-0" style={{ background: 'radial-gradient(circle at center, transparent 0%, #000 100%)' }}>
+        <div className="stars"></div>
+        <div className="stars2"></div>
+        <div className="stars3"></div>
+      </div>
+      
+      {/* Add the CSS for the stars animation */}
+      <style jsx>{`
+        @keyframes animateStars {
+          from {
+            transform: translateY(0);
+          }
+          to {
+            transform: translateY(-2000px);
+          }
+        }
+        
+        .stars {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          background: transparent;
+          box-shadow: ${generateStars(700)};
+          animation: animateStars 100s linear infinite;
+        }
+        
+        .stars2 {
+          position: absolute;
+          width: 2px;
+          height: 2px;
+          background: transparent;
+          box-shadow: ${generateStars(200)};
+          animation: animateStars 150s linear infinite;
+        }
+        
+        .stars3 {
+          position: absolute;
+          width: 3px;
+          height: 3px;
+          background: transparent;
+          box-shadow: ${generateStars(100)};
+          animation: animateStars 200s linear infinite;
+        }
+      `}</style>
     </div>
   );
+};
+
+// Helper function to generate random star positions
+const generateStars = (count: number) => {
+  let stars = '';
+  for (let i = 0; i < count; i++) {
+    const x = Math.floor(Math.random() * 2000);
+    const y = Math.floor(Math.random() * 2000);
+    stars += `${x}px ${y}px #FFF${i === count - 1 ? '' : ','} `;
+  }
+  return stars;
 };
 
 export default GalaxyBackground;

@@ -1,29 +1,20 @@
-
-import MainLayout from '@/layout/MainLayout';
 import HeroSection from '@/components/HeroSection';
-import Partners from '@/components/Partners';
-import CoursesSection from '@/components/courses/CoursesSection';
-import SupervisionSection from '@/components/supervision/SupervisionSection';
-import TestimonialsSection from '@/components/testimonials/TestimonialsSection';
-import CTASection from '@/components/cta/CTASection';
-import FeaturedCourseAnnouncement from '@/components/courses/FeaturedCourseAnnouncement';
+import CommunitySection from '@/components/CommunitySection';
 import ScienceHubSection from '@/components/ScienceHubSection';
-import TradChemDBSection from '@/components/TradChemDBSection';
-import { courses } from '@/data/coursesData';
+import FeaturedProject from '@/components/FeaturedProject';
+import Partners from '@/components/Partners';
+import CTASection from '@/components/cta/CTASection';
 
 const Index = () => {
   return (
-    <MainLayout>
+    <main>
       <HeroSection />
-      <FeaturedCourseAnnouncement />
       <ScienceHubSection />
-      <CoursesSection courses={courses} />
-      <TradChemDBSection id="tradchem-db-section" />
+      <CommunitySection />
+      <FeaturedProject />
       <Partners />
-      <TestimonialsSection />
-      <SupervisionSection />
       <CTASection />
-    </MainLayout>
+    </main>
   );
 };
 
