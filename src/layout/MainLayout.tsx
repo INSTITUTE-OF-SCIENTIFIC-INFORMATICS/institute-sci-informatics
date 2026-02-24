@@ -1,10 +1,10 @@
-
 import { ReactNode } from 'react';
+import { Outlet } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 interface MainLayoutProps {
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 const MainLayout = ({ children }: MainLayoutProps) => {
@@ -12,7 +12,7 @@ const MainLayout = ({ children }: MainLayoutProps) => {
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <main className="flex-grow">
-        {children}
+        {children || <Outlet />}
       </main>
       <Footer />
     </div>

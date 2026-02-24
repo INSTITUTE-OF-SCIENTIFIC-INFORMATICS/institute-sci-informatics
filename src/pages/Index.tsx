@@ -1,6 +1,6 @@
 import HeroSection from '@/components/HeroSection';
+import CoursesSection from '@/components/CoursesSection';
 import CommunitySection from '@/components/CommunitySection';
-import ScienceHubSection from '@/components/ScienceHubSection';
 import FeaturedProject from '@/components/FeaturedProject';
 import Partners from '@/components/Partners';
 import CTASection from '@/components/cta/CTASection';
@@ -9,7 +9,7 @@ const Index = () => {
   return (
     <main>
       <HeroSection />
-      <ScienceHubSection />
+      <CoursesSection />
       <CommunitySection />
       <FeaturedProject />
       <Partners />

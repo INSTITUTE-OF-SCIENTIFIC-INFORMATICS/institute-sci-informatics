@@ -1,61 +1,51 @@
-
 import { Button } from '@/components/ui/button';
 import { GitBranch, Users, Database } from 'lucide-react';
 
 const FeaturedProject = () => {
   return (
-    <section className="py-20 bg-gradient-to-br from-institute-blue/10 to-institute-purple/10">
+    <section className="py-24 bg-background">
       <div className="container">
-        <div className="flex flex-col md:flex-row gap-10 items-center">
-          {/* Project Image */}
-          <div className="md:w-1/2 animate-slide-in">
-            <div className="relative">
-              <div className="absolute -right-4 -bottom-4 w-full h-full rounded-xl border-2 border-institute-purple/30 -z-10"></div>
+        <div className="flex flex-col md:flex-row gap-12 items-center">
+          <div className="md:w-1/2">
+            <div className="relative rounded-2xl overflow-hidden">
               <img 
                 src="/lovable-uploads/8d43a969-0c24-4a9f-9793-d8efc036aa94.png" 
                 alt="Cheminformatics Project" 
-                className="rounded-xl shadow-xl"
+                className="w-full h-auto rounded-2xl"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
             </div>
           </div>
           
-          {/* Project Content */}
-          <div className="md:w-1/2 animate-slide-in animate-delay-200">
-            <h2 className="text-sm uppercase text-institute-purple font-semibold tracking-wider mb-2">
-              Open Source Project
-            </h2>
-            
-            <h1 className="text-3xl md:text-4xl font-bold mb-4 text-institute-blue">
+          <div className="md:w-1/2">
+            <p className="text-sm uppercase text-primary font-semibold tracking-widest mb-3">
+              Flagship Project
+            </p>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
               Global Cheminformatics Platform
-            </h1>
-            
-            <p className="text-lg text-muted-foreground mb-6">
-              Join our flagship cheminformatics initiative designed to provide Sri Lankan students 
-              with hands-on experience in computational chemistry, data analysis, and scientific computing.
+            </h2>
+            <p className="text-muted-foreground mb-8 leading-relaxed">
+              Join our flagship cheminformatics initiative — hands-on experience in computational chemistry, data analysis, and scientific computing.
             </p>
             
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-              <div className="flex flex-col items-center bg-white p-4 rounded-lg shadow-sm border border-institute-purple/30">
-                <GitBranch className="text-institute-purple h-6 w-6 mb-2" />
-                <span className="text-sm font-medium">Open Source</span>
-              </div>
-              
-              <div className="flex flex-col items-center bg-white p-4 rounded-lg shadow-sm border border-institute-purple/30">
-                <Users className="text-institute-blue h-6 w-6 mb-2" />
-                <span className="text-sm font-medium">Collaborative</span>
-              </div>
-              
-              <div className="flex flex-col items-center bg-white p-4 rounded-lg shadow-sm border border-institute-purple/30">
-                <Database className="text-institute-purple h-6 w-6 mb-2" />
-                <span className="text-sm font-medium">Real-world Data</span>
-              </div>
+            <div className="grid grid-cols-3 gap-4 mb-8">
+              {[
+                { icon: GitBranch, label: 'Open Source' },
+                { icon: Users, label: 'Collaborative' },
+                { icon: Database, label: 'Real-world Data' },
+              ].map((item) => (
+                <div key={item.label} className="flex flex-col items-center p-4 rounded-xl bg-secondary/50 border border-white/5">
+                  <item.icon className="h-5 w-5 text-primary mb-2" />
+                  <span className="text-xs font-medium text-muted-foreground">{item.label}</span>
+                </div>
+              ))}
             </div>
             
-            <div className="flex flex-wrap gap-4">
-              <Button size="lg" className="bg-institute-blue hover:bg-institute-blue/90 text-white">
+            <div className="flex gap-4">
+              <Button size="lg" className="bg-primary hover:bg-primary/90 text-primary-foreground">
                 Join Project
               </Button>
-              <Button size="lg" variant="outline" className="text-institute-blue border-institute-blue">
+              <Button size="lg" variant="outline" className="border-white/10 hover:bg-white/5">
                 Learn More
               </Button>
             </div>

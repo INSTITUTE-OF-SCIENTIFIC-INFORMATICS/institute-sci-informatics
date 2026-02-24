@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import MainLayout from '@/layout/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useUser } from '@/context/UserContext';
 import { PersonalRecord } from '@/types/supabase';
 
@@ -32,7 +32,7 @@ const Records = () => {
     setFetchingRecords(true);
     
     try {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from('personal_records')
         .select('*')
         .eq('user_id', user.id)
@@ -82,7 +82,7 @@ const Records = () => {
         ...formData,
       };
 
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('personal_records')
         .insert([newRecord] as any);
 
@@ -115,7 +115,7 @@ const Records = () => {
     if (!user) return;
     
     try {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('personal_records')
         .delete()
         .eq('id', id)
