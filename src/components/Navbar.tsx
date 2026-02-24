@@ -1,14 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import {
-  Book,
-  GraduationCap,
   Users,
   Menu,
   X,
-  FileText,
-  User,
-  Database,
   Github,
   Code2,
   BookOpen,
@@ -16,36 +11,21 @@ import {
   FileCode
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useUser } from '@/context/UserContext';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { user, signOut } = useUser();
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 0);
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
-  };
-
-  const handleSignOut = async () => {
-    await signOut();
-    navigate('/auth');
-  };
-
-  const handleSignIn = () => {
-    navigate('/auth');
   };
 
   return (
@@ -58,7 +38,6 @@ const Navbar = () => {
       )}
     >
       <div className="container flex items-center justify-between h-16">
-        {/* Logo */}
         <a href="/" className="flex items-center space-x-2">
           <Code2 className={cn(
             "h-8 w-8 transition-colors",
@@ -72,48 +51,25 @@ const Navbar = () => {
           </span>
         </a>
 
-        {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
-          <a 
-            href="#projects" 
-            className={cn(
-              "flex items-center space-x-1 hover:text-primary transition-colors",
-              isScrolled ? "text-foreground" : "text-white"
-            )}
-          >
-            <FileCode className="h-4 w-4" />
-            <span>Projects</span>
-          </a>
-          <a 
-            href="#community" 
-            className={cn(
-              "flex items-center space-x-1 hover:text-primary transition-colors",
-              isScrolled ? "text-foreground" : "text-white"
-            )}
-          >
-            <Users className="h-4 w-4" />
-            <span>Community</span>
-          </a>
-          <a 
-            href="#docs" 
-            className={cn(
-              "flex items-center space-x-1 hover:text-primary transition-colors",
-              isScrolled ? "text-foreground" : "text-white"
-            )}
-          >
-            <BookOpen className="h-4 w-4" />
-            <span>Documentation</span>
-          </a>
-          <a 
-            href="#discussions" 
-            className={cn(
-              "flex items-center space-x-1 hover:text-primary transition-colors",
-              isScrolled ? "text-foreground" : "text-white"
-            )}
-          >
-            <MessageSquare className="h-4 w-4" />
-            <span>Discussions</span>
-          </a>
+          {[
+            { href: '#projects', icon: FileCode, label: 'Projects' },
+            { href: '#community', icon: Users, label: 'Community' },
+            { href: '#docs', icon: BookOpen, label: 'Documentation' },
+            { href: '#discussions', icon: MessageSquare, label: 'Discussions' },
+          ].map((item) => (
+            <a
+              key={item.label}
+              href={item.href}
+              className={cn(
+                "flex items-center space-x-1 hover:text-primary transition-colors",
+                isScrolled ? "text-foreground" : "text-white"
+              )}
+            >
+              <item.icon className="h-4 w-4" />
+              <span>{item.label}</span>
+            </a>
+          ))}
           
           <Button
             variant={isScrolled ? "default" : "secondary"}
@@ -125,7 +81,6 @@ const Navbar = () => {
           </Button>
         </nav>
 
-        {/* Mobile Menu Button */}
         <Button
           variant="ghost"
           size="icon"
@@ -139,7 +94,6 @@ const Navbar = () => {
         </Button>
       </div>
 
-      {/* Mobile Menu */}
       <div
         className={cn(
           "fixed inset-0 bg-background/95 backdrop-blur-sm z-40 md:hidden",
@@ -148,22 +102,17 @@ const Navbar = () => {
         )}
       >
         <nav className="container flex flex-col space-y-8 py-8">
-          <a href="#projects" className="flex items-center space-x-2 text-xl" onClick={toggleMobileMenu}>
-            <FileCode className="h-5 w-5 text-primary" />
-            <span>Projects</span>
-          </a>
-          <a href="#community" className="flex items-center space-x-2 text-xl" onClick={toggleMobileMenu}>
-            <Users className="h-5 w-5 text-primary" />
-            <span>Community</span>
-          </a>
-          <a href="#docs" className="flex items-center space-x-2 text-xl" onClick={toggleMobileMenu}>
-            <BookOpen className="h-5 w-5 text-primary" />
-            <span>Documentation</span>
-          </a>
-          <a href="#discussions" className="flex items-center space-x-2 text-xl" onClick={toggleMobileMenu}>
-            <MessageSquare className="h-5 w-5 text-primary" />
-            <span>Discussions</span>
-          </a>
+          {[
+            { href: '#projects', icon: FileCode, label: 'Projects' },
+            { href: '#community', icon: Users, label: 'Community' },
+            { href: '#docs', icon: BookOpen, label: 'Documentation' },
+            { href: '#discussions', icon: MessageSquare, label: 'Discussions' },
+          ].map((item) => (
+            <a key={item.label} href={item.href} className="flex items-center space-x-2 text-xl" onClick={toggleMobileMenu}>
+              <item.icon className="h-5 w-5 text-primary" />
+              <span>{item.label}</span>
+            </a>
+          ))}
           <Button
             className="flex items-center space-x-2 w-full justify-center"
             onClick={() => {

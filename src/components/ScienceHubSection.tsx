@@ -1,6 +1,6 @@
 
 import { Card } from '@/components/ui/card';
-import { Beaker, Binary, Dna, Atom, Code, Cpu, Database, Server } from 'lucide-react';
+import { Beaker, Binary, Dna, Atom, Cpu, Database, Server } from 'lucide-react';
 
 const ScienceHubSection = () => {
   return (
@@ -68,7 +68,7 @@ const ScienceHubSection = () => {
                       <div className="text-xs text-green-400 font-mono">
                         {Array(20).fill(0).map((_, i) => (
                           <div key={i} className="whitespace-nowrap">
-                            {Array(8).fill(0).map((_, j) => Math.round(Math.random())).join('')}
+                            {Array(8).fill(0).map((_v, _j) => Math.round(Math.random())).join('')}
                           </div>
                         ))}
                       </div>

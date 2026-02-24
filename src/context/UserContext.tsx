@@ -34,8 +34,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       setUser(session?.user ?? null);
       
       if (session?.user) {
-        // Fetch user profile
-        const { data, error } = await supabase
+        const { data, error } = await (supabase as any)
           .from('profiles')
           .select('*')
           .eq('id', session.user.id)
@@ -54,13 +53,12 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     getSession();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      async (_event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
         
         if (session?.user) {
-          // Fetch user profile on auth state change
-          const { data, error } = await supabase
+          const { data, error } = await (supabase as any)
             .from('profiles')
             .select('*')
             .eq('id', session.user.id)

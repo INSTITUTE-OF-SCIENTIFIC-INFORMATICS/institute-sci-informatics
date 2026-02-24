@@ -5,7 +5,7 @@ import { supabase } from '@/integrations/supabase/client';
 import MainLayout from '@/layout/MainLayout';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useUser } from '@/context/UserContext';
 import { Profile as ProfileType } from '@/types/supabase';
 
@@ -52,7 +52,7 @@ const Profile = () => {
         avatar_url: avatarUrl,
       };
 
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('profiles')
         .upsert(updates as any);
 

@@ -1,59 +1,57 @@
 import { Button } from '@/components/ui/button';
-import { Github, Code2, Users } from 'lucide-react';
-import GalaxyBackground from './GalaxyBackground';
+import { Github, Users } from 'lucide-react';
+import VideoBackground from './VideoBackground';
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <GalaxyBackground />
+    <section className="relative w-full min-h-screen flex items-center justify-center overflow-hidden">
+      <VideoBackground />
       
       <div className="container relative z-10">
         <div className="max-w-3xl mx-auto text-center">
-          <div className="inline-flex items-center bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full mb-6 animate-fade-in">
-            <Code2 className="h-5 w-5 text-primary mr-2" />
-            <span className="text-white/90">Open Source Scientific Software Community</span>
-          </div>
-          
-          <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 animate-fade-in animate-delay-100">
-            Advancing Science Through Open Source Collaboration
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 animate-fade-in leading-tight">
+            Advancing Science Through{' '}
+            <span className="bg-gradient-to-r from-institute-blue to-institute-purple bg-clip-text text-transparent">
+              Open Source
+            </span>
           </h1>
           
-          <p className="text-xl text-white/80 mb-8 animate-fade-in animate-delay-200">
-            Join a community of developers, researchers, and enthusiasts working together to create innovative scientific software solutions.
+          <p className="text-lg md:text-xl text-white/70 mb-10 animate-fade-in animate-delay-200 max-w-2xl mx-auto">
+            A community of developers, researchers, and enthusiasts building innovative scientific software solutions together.
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in animate-delay-300">
             <Button
               size="lg"
-              className="bg-white text-gray-900 hover:bg-white/90 w-full sm:w-auto"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground w-full sm:w-auto text-base px-8"
               onClick={() => window.open('https://github.com/INSTITUTE-OF-SCIENTIFIC-INFORMATICS', '_blank')}
             >
               <Github className="mr-2 h-5 w-5" />
-              View Our Projects
+              View Projects
             </Button>
             
             <Button
               size="lg"
               variant="outline"
-              className="border-white text-white hover:bg-white/20 w-full sm:w-auto"
+              className="border-white/20 text-white hover:bg-white/10 w-full sm:w-auto text-base px-8"
             >
               <Users className="mr-2 h-5 w-5" />
               Join Community
             </Button>
           </div>
           
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8 text-white/80 animate-fade-in animate-delay-400">
-            <div className="backdrop-blur-sm bg-white/5 rounded-lg p-4">
-              <div className="font-bold text-2xl text-white mb-1">10+</div>
-              <div>Open Source Projects</div>
+          <div className="mt-16 grid grid-cols-3 gap-6 max-w-lg mx-auto animate-fade-in animate-delay-400">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-white">10+</div>
+              <div className="text-sm text-white/50 mt-1">Projects</div>
             </div>
-            <div className="backdrop-blur-sm bg-white/5 rounded-lg p-4">
-              <div className="font-bold text-2xl text-white mb-1">500+</div>
-              <div>Community Members</div>
+            <div className="text-center border-x border-white/10">
+              <div className="text-3xl font-bold text-white">500+</div>
+              <div className="text-sm text-white/50 mt-1">Members</div>
             </div>
-            <div className="backdrop-blur-sm bg-white/5 rounded-lg p-4">
-              <div className="font-bold text-2xl text-white mb-1">1000+</div>
-              <div>GitHub Stars</div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-white">1K+</div>
+              <div className="text-sm text-white/50 mt-1">Stars</div>
             </div>
           </div>
         </div>
