@@ -1,3 +1,5 @@
+import MoleculeBackground from './MoleculeBackground';
+
 const VideoBackground = () => {
   return (
     <div className="absolute inset-0 w-full h-full overflow-hidden">
@@ -9,7 +11,9 @@ const VideoBackground = () => {
         allowFullScreen
       />
       {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/50" />
+      <div className="absolute inset-0 bg-black/60" />
+      {/* Molecule animation overlay */}
+      <MoleculeBackground />
     </div>
   );
 };
