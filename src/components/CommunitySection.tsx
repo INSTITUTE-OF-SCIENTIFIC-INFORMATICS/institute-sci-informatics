@@ -38,10 +38,10 @@ const CommunitySection = () => {
             </div>
             <h4 className="text-lg font-semibold text-foreground mb-2">Connect with Others</h4>
             <p className="text-muted-foreground text-sm mb-6">
-              Join our Discord to connect with developers, researchers, and enthusiasts.
+              Join our WhatsApp group to connect with developers, researchers, and enthusiasts.
             </p>
-            <Button variant="outline" className="w-full border-white/10 hover:bg-white/5">
-              Join Discord
+            <Button variant="outline" className="w-full border-white/10 hover:bg-white/5" onClick={() => window.open('https://chat.whatsapp.com/BsBK5BGPGu29PXqyXynQyQ', '_blank')}>
+              Join WhatsApp
             </Button>
           </Card>
 
