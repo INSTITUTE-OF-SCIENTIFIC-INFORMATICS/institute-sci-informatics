@@ -1,4 +1,4 @@
-import { Github, Users, Code2, MessageSquare, BookOpen, Star } from 'lucide-react';
+import { Github, Users, Code2, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 
@@ -60,12 +60,10 @@ const CommunitySection = () => {
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-10 border-t border-white/5">
+        <div className="grid grid-cols-2 gap-8 py-10 border-t border-white/5">
           {[
-            { icon: Github, value: '10+', label: 'Open Source Projects' },
-            { icon: Users, value: '500+', label: 'Community Members' },
-            { icon: Star, value: '1000+', label: 'GitHub Stars' },
-            { icon: MessageSquare, value: '5K+', label: 'Discord Messages' },
+            { icon: Github, value: '2+', label: 'Open Source Projects' },
+            { icon: Users, value: '100+', label: 'Community Members' },
           ].map((stat) => (
             <div key={stat.label} className="text-center">
               <div className="flex items-center justify-center mb-2">

@@ -6,8 +6,6 @@ import {
   X,
   Github,
   Code2,
-  BookOpen,
-  MessageSquare,
   FileCode
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -55,8 +53,6 @@ const Navbar = () => {
           {[
             { href: '#projects', icon: FileCode, label: 'Projects' },
             { href: '#community', icon: Users, label: 'Community' },
-            { href: '#docs', icon: BookOpen, label: 'Documentation' },
-            { href: '#discussions', icon: MessageSquare, label: 'Discussions' },
           ].map((item) => (
             <a
               key={item.label}
@@ -105,8 +101,6 @@ const Navbar = () => {
           {[
             { href: '#projects', icon: FileCode, label: 'Projects' },
             { href: '#community', icon: Users, label: 'Community' },
-            { href: '#docs', icon: BookOpen, label: 'Documentation' },
-            { href: '#discussions', icon: MessageSquare, label: 'Discussions' },
           ].map((item) => (
             <a key={item.label} href={item.href} className="flex items-center space-x-2 text-xl" onClick={toggleMobileMenu}>
               <item.icon className="h-5 w-5 text-primary" />
