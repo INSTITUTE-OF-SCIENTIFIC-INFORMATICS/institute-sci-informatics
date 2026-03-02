@@ -15,15 +15,18 @@ interface Atom {
   isDragged: boolean;
 }
 
+const isMobileDevice = () => window.innerWidth < 768;
+
 const MoleculeBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const atomsRef = useRef<Atom[]>([]);
   const mouseRef = useRef({ x: -1000, y: -1000, isDown: false });
   const draggedAtomRef = useRef<number | null>(null);
   const startTimeRef = useRef(Date.now());
+  const hasSettledRef = useRef(false);
 
-  const BOND_DISTANCE = 140;
-  const ATOM_COUNT = 70;
+  const BOND_DISTANCE = isMobileDevice() ? 100 : 140;
+  const ATOM_COUNT = isMobileDevice() ? 30 : 70;
   const HOVER_RADIUS = 60;
 
   const colors = [
@@ -214,17 +217,22 @@ const MoleculeBackground = () => {
 
           // Friction — gradually slow down from burst to gentle drift
           const speed = Math.hypot(atom.vx, atom.vy);
-          const targetSpeed = 0.3; // gentle final drift
+          const mobile = isMobileDevice();
+          const targetSpeed = mobile ? 0.15 : 0.3;
           if (speed > targetSpeed) {
-            // Stronger friction early, softer later
             const friction = speed > 5 ? 0.97 : speed > 1 ? 0.995 : 0.999;
             atom.vx *= friction;
             atom.vy *= friction;
           } else if (speed < targetSpeed * 0.5) {
-            // Ensure minimum drift so they never fully stop
-            const angle = Math.atan2(atom.vy, atom.vx);
-            atom.vx = Math.cos(angle) * targetSpeed * 0.6;
-            atom.vy = Math.sin(angle) * targetSpeed * 0.6;
+            if (mobile) {
+              atom.vx = 0;
+              atom.vy = 0;
+              atom.settled = true;
+            } else {
+              const angle = Math.atan2(atom.vy, atom.vx);
+              atom.vx = Math.cos(angle) * targetSpeed * 0.6;
+              atom.vy = Math.sin(angle) * targetSpeed * 0.6;
+            }
           }
 
           // Mouse repulsion
@@ -290,6 +298,11 @@ const MoleculeBackground = () => {
         ctx.fill();
       }
 
+      // On mobile, stop the loop once all atoms have settled
+      if (isMobileDevice() && atoms.every(a => a.settled)) {
+        hasSettledRef.current = true;
+        return; // Stop animation loop
+      }
       animationId = requestAnimationFrame(draw);
     };
 
