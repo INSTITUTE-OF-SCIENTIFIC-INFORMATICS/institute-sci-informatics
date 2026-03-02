@@ -40,18 +40,14 @@ const HeroSection = () => {
             </Button>
           </div>
           
-          <div className="mt-16 grid grid-cols-3 gap-6 max-w-lg mx-auto animate-fade-in animate-delay-400">
+          <div className="mt-16 grid grid-cols-2 gap-6 max-w-sm mx-auto animate-fade-in animate-delay-400">
             <div className="text-center">
-              <div className="text-3xl font-bold text-white">10+</div>
+              <div className="text-3xl font-bold text-white">2+</div>
               <div className="text-sm text-white/50 mt-1">Projects</div>
             </div>
-            <div className="text-center border-x border-white/10">
-              <div className="text-3xl font-bold text-white">500+</div>
+            <div className="text-center border-l border-white/10">
+              <div className="text-3xl font-bold text-white">100+</div>
               <div className="text-sm text-white/50 mt-1">Members</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-white">1K+</div>
-              <div className="text-sm text-white/50 mt-1">Stars</div>
             </div>
           </div>
         </div>
